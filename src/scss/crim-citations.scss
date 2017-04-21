@@ -1,0 +1,46 @@
+@import "../../node_modules/dialog-polyfill/dialog-polyfill";
+@import "../../node_modules/continuo/dist/css/continuo.css";
+
+.mdl-navigation {
+  .mdl-button {
+    margin-left: .5em;
+  }
+}
+
+.mdl-layout__header-row {
+  padding: 0 25px 0 25px !important;
+}
+
+.score_header {
+  min-height: 45px !important;
+  border-bottom: 1px solid rgba(0,0,0,.1);
+
+  .mdl-layout__header-row {
+    height: 45px;
+    padding: 0 5px 0 5px
+  }
+
+  .mdl-layout-title {
+    margin: 0 0 0 8px;
+  }
+}
+
+.score {
+  padding: 5px;
+  overflow: hidden;
+  min-height: 500px;
+  transition: width 600ms ease-out, height 600ms ease-out;
+}
+
+.score_collapsed {
+  height: 0px;
+  overflow: hidden;
+}
+
+.cnt-container {
+  position: relative
+}
+
+.cnt-emabox {
+  position:absolute !important;
+}

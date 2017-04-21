@@ -1,0 +1,43 @@
+{
+  "name": "crim-citations",
+  "version": "0.0.1",
+  "description": "Backbone app to cite and relate portions of MEI music scores.",
+  "main": "src/js/index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/umd-mith/CRIM-Citations.git"
+  },
+  "keywords": [
+    "MEI",
+    "music",
+    "notation",
+    "music",
+    "renaissance",
+    "annotation",
+    "citation"
+  ],
+  "author": "Raff Viglianti, University of Maryland",
+  "license": "Apache-2.0",
+  "bugs": {
+    "url": "https://github.com/umd-mith/CRIM-Citations/issues"
+  },
+  "homepage": "https://github.com/umd-mith/CRIM-Citations#readme",
+  "dependencies": {
+    "backbone": "^1.3.3",
+    "continuo": "^0.1.3",
+    "dialog-polyfill": "^0.4.7",
+    "jquery": "^3.2.1"
+  },
+  "devDependencies": {
+    "babelify": "^7.3.0",
+    "browserify": "^14.3.0",
+    "gulp": "^3.9.1",
+    "gulp-rename": "^1.2.2",
+    "gulp-uglify": "^2.1.2",
+    "vinyl-buffer": "^1.0.0",
+    "vinyl-source-stream": "^1.1.0"
+  }
+}
