@@ -28,13 +28,26 @@
 .score {
   padding: 5px;
   overflow: hidden;
-  min-height: 500px;
-  transition: width 600ms ease-out, height 600ms ease-out;
+  min-height: 400px;
+  // transition: width 300ms ease-out, height 300ms ease-out;
+}
+
+.score_container {
+  // transition: width 300ms ease-out, height 300ms ease-out;
 }
 
 .score_collapsed {
-  height: 0px;
+  height: 45px !important;
   overflow: hidden;
+
+  .score {
+    display: none;
+  }
+
+  .score_header nav {
+    display: none;
+  }
+
 }
 
 .cnt-container {
@@ -43,4 +56,15 @@
 
 .cnt-emabox {
   position:absolute !important;
+
+  .cnt-emabox-hide {
+    position: absolute;
+    left: -20px;
+    top: 30px;
+    font-size: 17px;
+    background-color: #e0e0e0;
+    border-radius: 20px;
+    padding: 2px 8px 2px 8px;
+  }
+
 }

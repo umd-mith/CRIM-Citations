@@ -8,7 +8,7 @@
     <meta name="author" content="">
     <title>CRIM Citations</title>
     <script src="http://www.verovio.org/javascript/latest/verovio-toolkit.js"></script>
-    <link rel="stylesheet" type="text/css" href="../dist/css/crim-citations.css" />
+    <link rel="stylesheet" type="text/css" href="dist/css/crim-citations.css" />
 
     <script src="node_modules/dialog-polyfill/dialog-polyfill.js"></script>
 
@@ -17,22 +17,6 @@
     <script defer src="https://code.getmdl.io/1.3.0/material.min.js"></script>
   </head>
   <body>
-    <!-- <dialog class="mdl-dialog">
-      <h4 class="mdl-dialog__title">Add file</h4>
-      <div class="mdl-dialog__content">
-        <form action="#">
-          <div class="mdl-textfield mdl-js-textfield mdl-textfield--floating-label">
-            <input class="mdl-textfield__input" type="text">
-            <label class="mdl-textfield__label" for="sample3">URL...</label>
-          </div>
-        </form>
-      </div>
-      <div class="mdl-dialog__actions">
-        <button type="button" class="mdl-button mdl-button--accent close">Open from DropBox</button>
-        <button type="button" class="mdl-button mdl-button--accent close">Load from URL</button>
-        <button type="button" class="mdl-button close">Cancel</button>
-      </div>
-    </dialog> -->
     <div class="mdl-layout mdl-js-layout mdl-layout--fixed-header mdl-layout--fixed-tabs">
       <header class="mdl-layout__header">
         <div class="mdl-layout__header-row">
@@ -48,7 +32,7 @@
             <button class="mdl-button mdl-js-button mdl-js-ripple-effect mdl-button--fab mdl-button--mini-fab mdl-button--colored">
               <i class="material-icons">toc</i>
             </button>
-            <button class="mdl-button mdl-js-button mdl-js-ripple-effect mdl-button--fab mdl-button--mini-fab mdl-button--colored">
+            <button id="add_btn" class="mdl-button mdl-js-button mdl-js-ripple-effect mdl-button--fab mdl-button--mini-fab mdl-button--colored">
               <i class="material-icons">add</i>
             </button>
           </nav>
@@ -62,83 +46,15 @@
         <section class="mdl-layout__tab-panel is-active" id="create_edit">
           <div class="page-content">
             <div class="mdl-grid">
-              <!-- <div id="score1" class="mdl-cell mdl-cell--12-col mdl-shadow--2dp">
-                <div class="score_header">
-                  <div class="mdl-layout__header-row">
-                    <button class="mdl-button mdl-js-button mdl-button--icon">
-                      <i class="material-icons">vertical_align_center</i>
-                    </button>
-                    <span class="mdl-layout-title">DC 101</span>
-                    <div class="mdl-layout-spacer"></div>
-                    <nav class="mdl-navigation">
-                      <button class="mdl-button mdl-js-button mdl-button--icon prevPage">
-                        <i class="material-icons">navigate_before</i>
-                      </button>
-                      <button class="mdl-button mdl-js-button mdl-button--icon nextPage">
-                        <i class="material-icons">navigate_next</i>
-                      </button>
-                    </nav>
-                  </div>
-                </div>
-                <div class="score">
-                  ♫ ♫ ♫<br/>
-                  ♫ ♫ ♫<br/>
-                  ♫ ♫ ♫<br/>
-                  ♫ ♫ ♫<br/>
-                </div>
-              </div> -->
-              <!-- <div id="score2" class="mdl-cell mdl-cell--12-col mdl-shadow--2dp">
-                <div class="score_header">
-                  <div class="mdl-layout__header-row">
-                    <button class="mdl-button mdl-js-button mdl-button--icon">
-                      <i class="material-icons">zoom_out_map</i>
-                    </button>
-                    <span class="mdl-layout-title">DC 102</span>
-                    <div class="mdl-layout-spacer"></div>
-                    <nav class="mdl-navigation">
-                      <button class="mdl-button mdl-js-button mdl-button--icon">
-                        <i class="material-icons">navigate_before</i>
-                      </button>
-                      <button class="mdl-button mdl-js-button mdl-button--icon">
-                        <i class="material-icons">navigate_next</i>
-                      </button>
-                    </nav>
-                  </div>
-                </div>
-                <div class="score score_collapsed">
-                  ♫ ♫ ♫
-                </div>
-              </div>
-              <div id="score3" class="mdl-cell mdl-cell--12-col mdl-shadow--2dp">
-                <div class="score_header">
-                  <div class="mdl-layout__header-row">
-                    <button class="mdl-button mdl-js-button mdl-button--icon">
-                      <i class="material-icons">vertical_align_center</i>
-                    </button>
-                    <span class="mdl-layout-title">DC 103</span>
-                    <div class="mdl-layout-spacer"></div>
-                    <nav class="mdl-navigation">
-                      <button class="mdl-button mdl-js-button mdl-button--icon">
-                        <i class="material-icons">navigate_before</i>
-                      </button>
-                      <button class="mdl-button mdl-js-button mdl-button--icon">
-                        <i class="material-icons">navigate_next</i>
-                      </button>
-                    </nav>
-                  </div>
-                </div>
-                <div class="score">
-                  ♫ ♫ ♫
-                </div>
-              </div> -->
             </div>
           </div>
         </section>
         <section class="mdl-layout__tab-panel" id="view_assertion">
-          <div class="page-content"><!-- Your content goes here --></div>
+          <div class="page-content"></div>
         </section>
       </main>
     </div>
-    <script src="../dist/js/crim-citations.js"></script>
+    <div id="dialogs"></div>
+    <script src="dist/js/crim-citations.js"></script>
   </body>
 </html>

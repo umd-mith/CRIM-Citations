@@ -6,12 +6,11 @@ import score_tpl from '../templates/score-tpl'
 class ScoreView extends Backbone.View {
 
   initialize (options) {
-    this.mei = options.mei
     this.page = 1
   }
 
   get className() {
-      return "mdl-cell mdl-cell--12-col mdl-shadow--2dp";
+      return "mdl-cell mdl-cell--12-col mdl-shadow--2dp score_container";
   }
 
   template(tpl){
@@ -21,7 +20,8 @@ class ScoreView extends Backbone.View {
   get events() {
       return {
           "click .nextPage": this.nextPage,
-          "click .prevPage": this.prevPage
+          "click .prevPage": this.prevPage,
+          "click .collapse_expand_button": this.toggle
       }
   }
 
@@ -39,19 +39,21 @@ class ScoreView extends Backbone.View {
 
   renderContinuoScore() {
     let score_path = "#score-" + this.model.cid + " .score"
+    let scale = 35;
+    let border = 20;
 
     let opts = {
-        pageWidth: this.$el.width() * 100 / 35,
-        pageHeight: 250 * 100 / 35,
+        pageWidth: this.$el.width() * 100 / scale,
+        pageHeight: 250 * 100 / scale,
         ignoreLayout: 1,
         adjustPageHeight: 1,
-        border: 20,
-        scale: 35
+        border: border,
+        scale: scale
     };
 
     this.continuo = new Continuo({
       el: score_path,
-      mei: this.model.get("mei"),
+      meiString: this.model.get("mei"),
       verovioToolkit: ScoreView.verovioToolkit,
       verovioOptions: opts,
       paginate: true,
@@ -59,6 +61,9 @@ class ScoreView extends Backbone.View {
     })
 
     this.continuo.render()
+
+    // Adjust height to SVG
+    this.$el.height(this.$el.find('svg').height() + 100)
   }
 
   nextPage() {
@@ -73,6 +78,17 @@ class ScoreView extends Backbone.View {
         this.page = this.page - 1;
         this.continuo.renderPage(this.page)
     }
+  }
+
+  toggle() {
+    if (this.$el.hasClass('score_collapsed')) {
+      this.$el.removeClass('score_collapsed')
+    }
+    else {
+      this.$el.addClass('score_collapsed')
+    }
+    this.$el.find(".collapse_icon").toggle()
+    this.$el.find(".expand_icon").toggle()
   }
 
 }
