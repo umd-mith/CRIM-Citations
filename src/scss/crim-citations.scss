@@ -44,7 +44,7 @@
     display: none;
   }
 
-  .score_header nav {
+  .score_pagination {
     display: none;
   }
 
@@ -67,4 +67,77 @@
     padding: 2px 8px 2px 8px;
   }
 
+}
+
+/* Make sure to make responsive */
+.score_assertion_dialog, .score_relationship_dialog, .score_assertions_dialog {
+  width: 500px !important;
+
+  .types {
+    padding: 4px;
+  }
+
+  label {
+    width: auto;
+  }
+
+  .drop {
+    float: right;
+    margin-top: -4px;
+  }
+
+  .score_preview_cnt {
+    position: absolute;
+    background: white;
+    top: 10px;
+    right: 10px;
+    padding: 5px;
+  }
+
+  .score_preview_close {
+    position: absolute !important;
+    top: 0;
+    right: 0;
+    cursor: pointer;
+  }
+
+  i.clickable {
+    cursor: pointer;
+  }
+
+}
+
+svg {
+  .preview_selected {
+    color: #ffb944;
+    fill: currentColor;
+  }
+}
+
+.mdl-button--attention {
+  background-color: #ffb944 !important;
+}
+
+
+.truncate {
+  width: 160px;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+.truncate_short {
+  width: 112px;
+}
+
+.assert_ema {
+  text-align: right;
+  font-size: 20px;
+  font-weight: bold;
+  color: rgb(68,138,255);
+  width: 450px;
+  white-space: nowrap;
+  overflow: hidden;
+  height: 30px;
+  text-overflow: ellipsis;
 }

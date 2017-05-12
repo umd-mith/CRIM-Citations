@@ -7,8 +7,17 @@ import '../../../lib/dropbox/dropins';
 
 class AddFile extends Backbone.View {
 
-  initialize () {
+  initialize (options) {
     Dropbox.appKey = "gwuog2373cwj45g";
+    this.container = options.container;
+  }
+
+  get tagName(){
+    return "dialog"
+  }
+
+  get className() {
+    return "mdl-dialog addFile"
   }
 
   template(tpl){
@@ -76,18 +85,26 @@ class AddFile extends Backbone.View {
   }
 
   show() {
-    this.dialog.showModal();
+    // it it's detached, render.
+    if (this.$el.parent().length == 0) {
+      this.render()
+      // Assumes MDL JS
+      if(!(typeof(componentHandler) == 'undefined')){
+          componentHandler.upgradeAllRegistered();
+      }
+    }
+
+    this.el.showModal();
   }
 
   close() {
-    this.dialog.close();
+    this.el.close();
   }
 
   render() {
-    this.$el.append(this.template())
-    this.dialog = this.$el.find('dialog').get(0)
-    if (! this.dialog.showModal) {
-      dialogPolyfill.registerDialog(this.dialog);
+    this.container.append(this.$el.html(this.template()))
+    if (! this.el.showModal) {
+      dialogPolyfill.registerDialog(this.el);
     }
   }
 
