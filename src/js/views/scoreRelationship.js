@@ -9,6 +9,9 @@ class ScoreRelationship extends Backbone.View {
 
   initialize(options){
     this.container = options.container
+
+    this.listenTo(Events, "startHideMode", this.startHideMode)
+    this.listenTo(Events, "closedAssert", this.stopHideMode)
   }
 
   template(tpl){
@@ -31,7 +34,9 @@ class ScoreRelationship extends Backbone.View {
           "click #save_score_relationship": this.save,
           "click #cancel_score_relationship": this.cancel,
           "click .selection_preview": this.preview,
-          "click .score_preview_close": this.closePreview
+          "click .score_preview_close": this.closePreview,
+          "click .show-score-assertion": this.showsScoreAssertion,
+          "click .hide_button": this.hide
       }
   }
 
@@ -44,6 +49,7 @@ class ScoreRelationship extends Backbone.View {
 
   save(){
     this.model.set("direction", this.$el.find("input[name=rel-dir]:checked").attr("id").split("-").pop())
+    this.model.set("comment", this.$el.find("#rel-comment").val())
     this.$el.find(".types").each((i, type) => {
       let $type = $(type)
       let $cb = $type.find(".cb")
@@ -69,6 +75,7 @@ class ScoreRelationship extends Backbone.View {
         this.model.get("types")[DOMid] = type_data
       }
     })
+    this.scores[0].collection.trigger("clearScoreSelections")
     this.close()
   }
 
@@ -89,6 +96,53 @@ class ScoreRelationship extends Backbone.View {
     this.el.close();
     this.$el.detach();
     this.scores[0].trigger("redoVerovioLayout")
+  }
+
+  hide() {
+    Events.trigger("startHideMode", this.el)
+  }
+
+  startHideMode() {
+    this.el.close()
+    this.scores[0].trigger("redoVerovioLayout")
+  }
+
+  stopHideMode() {
+    if (!this.$el.attr("open")) {
+      this.el.showModal()
+    }
+  }
+
+  showsScoreAssertion(e) {
+    let score_place = $(e.target).closest('li').data('score')
+    let score_idx = score_place == "A" ? 0 : 1
+    let score = this.scores[score_idx]
+    let score_assert_id = this.model.get("score"+score_place+"assert")
+    let score_assert = score.assertions.get(score_assert_id)
+    if (!score_assert) {
+      let new_assert = score.newAssertion()
+      this.model.set("score"+score_place+"assert", new_assert.cid)
+    }
+    else {
+      // this.$el.find('.assert_types').html(
+      //   "("+score.assertions.get(score_assert).get("types").join(", ")+")"
+      // )
+      score.trigger("edit_assertion", score_assert_id)
+    }
+  }
+
+  updateAssert(score_place){
+    let assert_id = this.model.get("score"+score_place+"assert")
+    let score_idx = score_place == "A" ? 0 : 1
+    console.log(this.scores[score_idx], assert_id)
+    let types = this.scores[score_idx].assertions.get(assert_id).get("types")
+    if (types) {
+      let labels = []
+      for (let type in types){
+        labels.push(types[type].label)
+      }
+      this.$el.find(".assert_types"+score_place).html("("+labels.join(", ")+")")
+    }
   }
 
   showType(e) {
@@ -148,12 +202,17 @@ class ScoreRelationship extends Backbone.View {
 
   render(scores, rel) {
     this.scores = scores
+
+    this.listenTo(scores[0].assertions, "savedAssert", ()=>{this.updateAssert("A")})
+    this.listenTo(scores[1].assertions, "savedAssert", ()=>{this.updateAssert("B")})
+
     if (rel) {
       this.model = this.collection.get(rel)
     }
     else {
       this.model = this.collection.add({})
     }
+
     this.model.set("scoreA", scores[0].cid)
     this.model.set("scoreB", scores[1].cid)
     this.model.set("scoreA_ema", scores[0].get("ema"))

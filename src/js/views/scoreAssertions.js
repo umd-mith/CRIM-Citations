@@ -29,6 +29,8 @@ class ScoreAssertions extends Backbone.View {
           "click .close": this.close,
           "click .edit_assertion": this.edit,
           "click .selection_preview": this.preview,
+          "click .rel_preview": this.relPreview,
+          "click .edit_relationship": this.editRel,
           "click .score_preview_close": this.closePreview
       }
   }
@@ -56,6 +58,12 @@ class ScoreAssertions extends Backbone.View {
     let assertid = $(e.target).closest("li").data("assertionid")
     this.close()
     Events.trigger("edit_assertion", assertid)
+  }
+
+  editRel(e){
+    let relid = $(e.target).closest("li").data("relid")
+    this.close()
+    Events.trigger("edit_relationship", relid)
   }
 
   preview(e) {
@@ -87,12 +95,18 @@ class ScoreAssertions extends Backbone.View {
 
   }
 
+  relPreview(e) {
+
+  }
+
   closePreview(){
     this.$el.find(".score_preview_cnt").hide()
     this.trigger("redoVerovioLayout")
   }
 
   render() {
+    // This is ugly but time constraint led me here.
+    // A refactoring would move relationships and assertions under the same model
     return new Promise((resolve, reject)=>{
       new Promise((res, rej)=>{
         this.listenTo(Events, "response:relationships", (rels) => res(rels))

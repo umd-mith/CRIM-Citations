@@ -6,6 +6,7 @@ import Scores from '../data/coll-scores';
 import ScoreView from './score';
 import Relationships from '../data/coll-relationships';
 import RelationshipView from './scoreRelationship';
+import HideModeComponent from './hideModeComponent';
 
 class AppView extends Backbone.View {
 
@@ -14,13 +15,18 @@ class AppView extends Backbone.View {
     this.scores = new Scores
     this.relationships = new Relationships
     this.relationshipDialog = new RelationshipView({container: $("#dialogs"), collection: this.relationships})
+    this.hideModeComponent = new HideModeComponent()
 
     this.listenTo(Events, "addScore", this.addScore)
     this.listenTo(Events, "relDialog:open", this.openRelDialog)
+    this.listenTo(Events, "edit_relationship", (relid)=>{this.openRelDialog(undefined, relid)})
     this.listenTo(this.scores, "change", this.hasDoubleSection)
 
     this.listenTo(Events, "request:selections", ()=>{Events.trigger("response:selections", this.requestSelections())})
     this.listenTo(Events, "request:relationshipsFor", (score)=>{Events.trigger("response:relationships", this.requestRelationshipsFor(score))})
+
+    this.listenTo(Events, "startHideMode", this.startHideMode)
+    this.listenTo(Events, "stopHideMode", this.stopHideMode)
 
   }
 
@@ -43,12 +49,30 @@ class AppView extends Backbone.View {
   }
 
   openRelDialog(scores, rel) {
+    if (!scores && rel){
+      let mrel = this.relationships.get(rel)
+      scores = [this.scores.get(mrel.get("scoreA")), this.scores.get(mrel.get("scoreB"))]
+
+      // Add selections to the scores...
+      let scoreA_ema = mrel.get("scoreA_ema")
+      let scoreB_ema = mrel.get("scoreB_ema")
+
+    }
     this.relationshipDialog.render(scores, rel)
     this.relationshipDialog.show()
   }
 
   render() {
 
+  }
+
+  startHideMode(dialog) {
+    this.scores.trigger("disableButtons")
+    this.$el.find(".crim_header").prepend(this.hideModeComponent.render(dialog))
+  }
+
+  stopHideMode() {
+    this.scores.trigger("renableButtons")
   }
 
   requestSelections(){

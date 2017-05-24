@@ -14,13 +14,16 @@ class ScoreView extends Backbone.View {
     this.scoreAssertionDialog = new ScoreAssertionView({container: $("#dialogs"), collection: this.model.assertions})
     this.scoreAssertionsDialog = new ScoreAssertionsView({container: $("#dialogs"), collection: this.model.assertions, score: this.model.cid})
 
-    this.listenTo(Events, "edit_assertion", this.showAssertion)
+    this.listenTo(this.model, "edit_assertion", this.showAssertion)
+    this.listenTo(this.model, "new_assertion", this.newAssertion)
     this.listenTo(this.scoreAssertionsDialog, "redoVerovioLayout", this.doVerovioLayout)
     this.listenTo(this.model, "redoVerovioLayout", this.doVerovioLayout)
     this.listenTo(this.model, "showRelationshipButton", ()=>{this.$el.find(".show-score-relationship").show()})
     this.listenTo(this.model.collection, "hideRelationshipButtons", ()=>{this.$el.find(".show-score-relationship").hide()})
     this.listenTo(this.model.collection, "clearScoreSelections", ()=>{this.continuo.clearSelection(); this.$el.find(".show-score-relationship").hide()})
     this.listenTo(this.model.collection, "storeSelections", this.storeSelection)
+    this.listenTo(this.model.collection, "disableButtons", this.disableButtons)
+    this.listenTo(this.model.collection, "renableButtons", this.renableButtons)
 
     // Eveytime the score container is touched, re-load its MEI data into Verovio (all score boxes are sharing ONE Verovio instance)
     this.$el.on("mousedown", ()=>{
@@ -45,7 +48,7 @@ class ScoreView extends Backbone.View {
           "click .prevPage": this.prevPage,
           "click .collapse_expand_button": this.toggle,
           "click .show-score-assertions": this.showAssertions,
-          "click .show-score-assertion": this.newAssertion,
+          // "click .show-score-assertion": this.newAssertion,
           "click .show-score-relationship": this.showRelationship
       }
   }
@@ -100,19 +103,19 @@ class ScoreView extends Backbone.View {
 
     this.listenTo(this.continuo, "selected", ()=>{
       // show assertion button
-      this.$el.find(".show-score-assertion").show()
+      // this.$el.find(".show-score-assertion").show()
       this.model.set("hasSelection", true)
     })
     this.listenTo(this.continuo, "deselected", ()=>{
       if (this.continuo.selectedElements.length == 0) {
         // hide assertion button
-        this.$el.find(".show-score-assertion").hide()
+        // this.$el.find(".show-score-assertion").hide()
         this.model.set("hasSelection", false)
       }
     })
     this.listenTo(this.continuo, "clearedSelection", ()=>{
       // hide assertion button
-      this.$el.find(".show-score-assertion").hide()
+      // this.$el.find(".show-score-assertion").hide()
       this.model.set("hasSelection", false)
     })
 
@@ -150,7 +153,7 @@ class ScoreView extends Backbone.View {
           componentHandler.upgradeAllRegistered();
       }
       this.scoreAssertionsDialog.show()
-    })    
+    })
   }
 
   showAssertion(assert) {
@@ -162,13 +165,13 @@ class ScoreView extends Backbone.View {
     this.scoreAssertionDialog.show()
   }
 
-  newAssertion(){
+  newAssertion(new_assert){
     this.scoreAssertionDialog.ema = this.$el.find(".cnt-emaexpr-expr").text()
+    this.scoreAssertionDialog.title = this.model.get("title")
     this.scoreAssertionDialog.mei_ids = this.continuo.selectedElements
-    this.showAssertion()
-    this.continuo.clearSelection()
-    this.$el.find(".show-score-assertion").hide()
-
+    this.showAssertion(new_assert)
+    // this.continuo.clearSelection()
+    // this.$el.find(".show-score-assertion").hide()
   }
 
   getSelections(){
@@ -183,12 +186,29 @@ class ScoreView extends Backbone.View {
     this.getSelections().then((sel)=>{
       Events.trigger("relDialog:open", sel)
     })
-    this.model.collection.trigger("clearScoreSelections")
+    // this.model.collection.trigger("clearScoreSelections")
   }
 
   storeSelection(){
     this.model.set("ema", this.$el.find(".cnt-emaexpr-expr").text())
     this.model.set("mei_ids", this.continuo.selectedElements)
+  }
+
+  disableButtons(){
+    this.$el.find(".show-score-relationship").attr("disabled", true)
+    this.$el.find(".show-score-assertions").attr("disabled", true)
+    // find a way to cover .cnt-container to stop click events on it
+    let $score = this.$el.find(".score")
+    let $mask = $("<div class='mask'></div>")
+    $mask.width($score.width())
+    $mask.height($score.height())
+    $score.prepend($mask)
+  }
+
+  renableButtons(){
+    this.$el.find(".show-score-relationship").attr("disabled", false)
+    this.$el.find(".show-score-assertions").attr("disabled", false)
+    this.$el.find(".mask").remove()
   }
 
 }

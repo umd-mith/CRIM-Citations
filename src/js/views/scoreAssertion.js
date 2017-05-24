@@ -28,7 +28,8 @@ class ScoreAssertion extends Backbone.View {
           "click .drop": this.showMusType,
           "change .cb": this.showMusTypeCh,
           "click #save_score_assertion": this.save,
-          "click #cancel_score_assertion": this.cancel
+          "click #cancel_score_assertion": this.cancel,
+          "click .hide_button": this.hide
       }
   }
 
@@ -38,10 +39,17 @@ class ScoreAssertion extends Backbone.View {
     }
   }
 
+  hide() {
+    this.el.close()
+    Events.trigger("startHideMode", this.el)
+  }
+
   save(){
     // Now "set" all the things on this.model.
     this.model.set("ema", this.ema)
+    this.model.set("title", this.title)
     this.model.set("mei_ids", this.mei_ids)
+    this.model.set("comment", this.$el.find("#assert-comment").val())
     this.$el.find(".types").each((i, type) => {
       let $type = $(type)
       let $cb = $type.find(".cb")
@@ -68,7 +76,8 @@ class ScoreAssertion extends Backbone.View {
       }
     })
     this.close()
-    Events.trigger("ema:reset")
+    this.model.collection.trigger("savedAssert")
+    // Events.trigger("ema:reset")
   }
 
   showMusType(e) {
@@ -99,11 +108,13 @@ class ScoreAssertion extends Backbone.View {
           componentHandler.upgradeAllRegistered();
       }
     }
+    console.log(this.el)
     this.el.showModal();
   }
 
   close() {
     this.el.close();
+    Events.trigger("closedAssert")
     this.$el.detach();
   }
 
@@ -116,7 +127,9 @@ class ScoreAssertion extends Backbone.View {
     }
     let jmodel = this.model.toJSON()
     jmodel.ema = this.ema
+    jmodel.title = this.title
     this.container.append(this.$el.html(this.template(jmodel)))
+    // THIS IS NOT WORKING FOR SOME REASON    
     if (! this.el.showModal) {
       dialogPolyfill.registerDialog(this.el);
     }

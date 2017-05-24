@@ -2,7 +2,11 @@ import * as Handlebars from 'handlebars';
 
 let score_assertion_tpl = `
   <h4 class="mdl-dialog__title">Score assertion</h4>
+  <button class="mdl-button mdl-js-button mdl-button--raised hide_button">
+    Hide
+  </button>
   <div class="mdl-dialog__content">
+    <div class="assert_score">{{title}}</div>
     <div class="assert_ema">{{ema}}</div>
     <h4>Musical type</h4>
     <div class="mdl-shadow--2dp types">
@@ -412,6 +416,11 @@ let score_assertion_tpl = `
           <label class="mdl-textfield__label" for="mt-fp-text">Comment...</label>
         </div>
       </div>
+    </div>
+    <h4>Comment</h4>
+    <div class="mdl-textfield mdl-js-textfield">
+      <textarea class="mdl-textfield__input" type="text" rows="5" id="assert-comment">{{#if comment}}{{comment}}{{/if}}</textarea>
+      <label class="mdl-textfield__label" for="assert-comment">Comment...</label>
     </div>
   </div>
   <div class="mdl-dialog__actions">

@@ -13,9 +13,9 @@ let pag_tpl = `
       <button class="mdl-button mdl-js-button mdl-button--fab mdl-button--mini-fab mdl-button--attention show-score-relationship" style="display:none">
         <i class="material-icons">compare_arrows</i>
       </button>
-      <button class="mdl-button mdl-js-button mdl-button--fab mdl-button--mini-fab mdl-button--attention show-score-assertion" style="display:none">
+      <!--<button class="mdl-button mdl-js-button mdl-button--fab mdl-button--mini-fab mdl-button--attention show-score-assertion" style="display:none">
         <i class="material-icons">playlist_add</i>
-      </button>
+      </button>-->
       <button class="mdl-button mdl-js-button mdl-button--fab mdl-button--mini-fab mdl-button--colored show-score-assertions">
         <i class="material-icons">toc</i>
       </button>
