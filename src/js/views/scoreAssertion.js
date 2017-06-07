@@ -2,6 +2,7 @@ import $ from 'jquery';
 import * as Backbone from 'backbone';
 import Events from '../utils/backbone-events';
 import score_assertion_tpl from '../templates/score_assertion-tpl';
+import voice_tpl from '../templates/voice-tpl';
 import dialogPolyfill from 'dialog-polyfill'
 
 class ScoreAssertion extends Backbone.View {
@@ -29,7 +30,8 @@ class ScoreAssertion extends Backbone.View {
           "change .cb": this.showMusTypeCh,
           "click #save_score_assertion": this.save,
           "click #cancel_score_assertion": this.cancel,
-          "click .hide_button": this.hide
+          "click .hide_button": this.hide,
+          "click .addVoice": this.addVoice
       }
   }
 
@@ -61,7 +63,6 @@ class ScoreAssertion extends Backbone.View {
         $type.find(".rest input, .rest textarea").each((j, input)=>{
           let $input = $(input)
           let key = $input.attr("id").split("-").pop()
-          // let name = $input.attr("name") ? $input.attr("name").split("-").pop() : ""
           switch ($input.attr("type")) {
               case "text":
                 type_data[key] = $input.val()
@@ -72,12 +73,99 @@ class ScoreAssertion extends Backbone.View {
                 break;
           }
         })
+        type_data.options = []
+        $type.find(".rest .group").each((j, group)=>{
+          type_data.isSelect = true
+          let grp = {}
+          $(group).find("select option:selected").each((j, option)=>{
+            let $option = $(option)
+            let key = $option.parent().attr("id").split("-").pop()
+            grp[key] = $option.val()
+          })
+          type_data.options.push(grp)
+        })
         this.model.get("types")[DOMid] = type_data
       }
     })
     this.close()
     this.model.collection.trigger("savedAssert")
     // Events.trigger("ema:reset")
+    // console.log(this.model.get("types"))
+  }
+
+  // Voice handling is ugly, but needed to be done hastily.
+  // When (if) refactoring, use a collection and dedicated views.
+  // Possibly types would need their own Coll and Model
+  setDropdowns(){
+    // Dropdowns need to be handled with JS (ie not by the template)
+
+    this.$el.find("select").prop("disabled", true)
+
+
+    let types = this.model.get("types")
+    for (let type in types){
+      if (types[type].isSelect) {
+        for (let [grp_i, group] of types[type].options.entries()) {
+          let $cnt = $("<span class='group'></span>")
+          let $div = this.$el.find("#"+type).closest("div").find(".selectGroup")
+          let addRemove = false
+          $div.append($cnt)
+          for (let key in group) {
+            let $select = this.$el.find("#"+type+"-"+key)
+            if ($select.length == 0){
+              this.addVoiceTpl($cnt, type)
+              addRemove = true
+            }
+            else {
+              addRemove = false
+            }
+            this.$el.find("#"+type+"-"+key).prop("disabled", false)
+            this.$el.find("#"+type+"-"+key+" option").each((i, opt)=>{
+              if ($(opt).val() == types[type]["options"][grp_i][key]) {
+                $(opt).prop("selected", true)
+              }
+            })
+          }
+          if (addRemove) this.addRemoveVoice($cnt)
+        }
+      }
+    }
+  }
+
+  addVoiceTpl(cnt, type) {
+    let $cnt = $(cnt)
+    let pos = $cnt.closest(".selectGroup").find("select").length
+    let tpl = {
+      voices : this.voices,
+      type : type,
+      pos : pos+1
+    }
+    let el = voice_tpl(tpl)
+    $cnt.append(el)
+  }
+
+  addRemoveVoice(div){
+    let removebtn = $(`<button class="voiceremove mdl-button mdl-js-button mdl-button--icon">
+      <i class="material-icons">close</i>
+    </button>`)
+    div.append(removebtn)
+    removebtn.click(()=>{
+      div.remove()
+    })
+  }
+
+  addVoice(e) {
+    e.preventDefault()
+    let $a = $(e.target).closest("div")
+    let $div = $a.prev("div")
+    let type = $a.data("for")
+    let $cnt = $("<span class='group'></span>")
+    $div.append($cnt)
+    this.addVoiceTpl($cnt, type)
+    if ($a.data("pair")) {
+      this.addVoiceTpl($cnt, type)
+    }
+    this.addRemoveVoice($cnt)
   }
 
   showMusType(e) {
@@ -89,12 +177,12 @@ class ScoreAssertion extends Backbone.View {
     let rest = box.closest('.types').find('.rest')
     if (box.prop("checked")) {
       // Assumes MDL
-      rest.find("input, textarea").prop("disabled", false).parent().removeClass("is-disabled")
+      rest.find("input, textarea, select, button").prop("disabled", false).parent().removeClass("is-disabled")
       rest.show()
     }
     else {
       rest.hide()
-      rest.find("input, textarea").prop("disabled", true).parent().addClass("is-disabled")
+      rest.find("input, textarea, select, button").prop("disabled", true).parent().addClass("is-disabled")
     }
   }
 
@@ -108,7 +196,6 @@ class ScoreAssertion extends Backbone.View {
           componentHandler.upgradeAllRegistered();
       }
     }
-    console.log(this.el)
     this.el.showModal();
   }
 
@@ -128,8 +215,11 @@ class ScoreAssertion extends Backbone.View {
     let jmodel = this.model.toJSON()
     jmodel.ema = this.ema
     jmodel.title = this.title
+    jmodel.voices = this.voices
     this.container.append(this.$el.html(this.template(jmodel)))
-    // THIS IS NOT WORKING FOR SOME REASON    
+
+    this.setDropdowns()
+
     if (! this.el.showModal) {
       dialogPolyfill.registerDialog(this.el);
     }

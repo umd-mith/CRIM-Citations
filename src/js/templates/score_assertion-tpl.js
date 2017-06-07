@@ -18,10 +18,15 @@ let score_assertion_tpl = `
         <i class="material-icons clickable">arrow_drop_down</i>
       </button>
       <div class="rest" style="display:none">
-        <div class="mdl-textfield mdl-js-textfield mdl-textfield--floating-label">
-          <input class="mdl-textfield__input" type="text" pattern="[SATBQ6]" id="mt-cf-voice" {{#unless types.mt-cf}}disabled{{/unless}} {{#if types.mt-cf.voice}}value="{{types.mt-cf.voice}}"{{/if}}>
-          <label class="mdl-textfield__label" for="mt-cf-voice">Voice...</label>
-          <span class="mdl-textfield__error">Input is not a voice!</span>
+        <div class="selectGroup">
+          <label class="select_label" for="mt-cf-voice">Voice</label><br/>
+          <span class="group">
+            <select class="dialog_select" name="mt-cf-voice" id="mt-cf-voice">
+              {{#each voices}}
+              <option value="{{this}}">{{this}}</option>
+              {{/each}}
+            </select>
+          </span>
         </div>
         <label class="mdl-checkbox mdl-js-checkbox mdl-js-ripple-effect" for="mt-cf-dur">
           <input type="checkbox" id="mt-cf-dur" class="mdl-checkbox__input" {{#if types.mt-cf.dur}}checked{{/if}} {{#unless types.mt-cf}}checked disabled{{/unless}}>
@@ -42,10 +47,15 @@ let score_assertion_tpl = `
         <i class="material-icons clickable">arrow_drop_down</i>
       </button>
       <div class="rest" style="display:none">
-        <div class="mdl-textfield mdl-js-textfield mdl-textfield--floating-label">
-          <input class="mdl-textfield__input" type="text" pattern="[SATBQ6]" id="mt-sog-voice" {{#if types.mt-sog.voice}}value="{{types.mt-sog.voice}}"{{/if}} {{#unless types.mt-sog}}disabled{{/unless}}>
-          <label class="mdl-textfield__label" for="mt-sog-voice">Voice...</label>
-          <span class="mdl-textfield__error">Input is not a voice!</span>
+        <div class="selectGroup">
+          <label class="select_label" for="mt-sog-voice">Voice</label><br/>
+          <span class="group">
+            <select class="dialog_select" name="mt-sog-voice" id="mt-sog-voice">
+              {{#each voices}}
+              <option value="{{this}}">{{this}}</option>
+              {{/each}}
+            </select>
+          </span>
         </div>
         <div>
           <label class="mdl-checkbox mdl-js-checkbox mdl-js-ripple-effect" for="mt-sog-dur">
@@ -76,10 +86,15 @@ let score_assertion_tpl = `
         <i class="material-icons clickable">arrow_drop_down</i>
       </button>
       <div class="rest" style="display:none">
-        <div class="mdl-textfield mdl-js-textfield mdl-textfield--floating-label">
-          <input class="mdl-textfield__input" type="text" pattern="[SATBQ6]" id="mt-csog-voice" {{#if types.mt-csog.voice}}value="{{types.mt-csog.voice}}"{{/if}} {{#unless types.mt-csog}}disabled{{/unless}}>
-          <label class="mdl-textfield__label" for="mt-csog-voice">Voice...</label>
-          <span class="mdl-textfield__error">Input is not a voice!</span>
+        <div class="selectGroup">
+          <label class="select_label" for="mt-csog-voice">Voice</label><br/>
+          <span class="group">
+            <select class="dialog_select" name="mt-csog-voice" id="mt-csog-voice">
+              {{#each voices}}
+              <option value="{{this}}">{{this}}</option>
+              {{/each}}
+            </select>
+          </span>
         </div>
         <label class="mdl-checkbox mdl-js-checkbox mdl-js-ripple-effect" for="mt-csog-dur">
           <input type="checkbox" id="mt-csog-dur" class="mdl-checkbox__input" {{#if types.mt-csog.dur}}checked{{/if}} {{#unless types.mt-csog}}checked disabled{{/unless}}>
@@ -100,10 +115,25 @@ let score_assertion_tpl = `
         <i class="material-icons clickable">arrow_drop_down</i>
       </button>
       <div class="rest" style="display:none">
-        <div class="mdl-textfield mdl-js-textfield mdl-textfield--floating-label">
-          <input class="mdl-textfield__input" type="text" pattern="([SATBQ6]{2}(\/(?!$)|$))+" id="mt-cd-voice" {{#if types.mt-cd}}value="{{types.mt-cd.voice}}"{{/if}} {{#unless types.mt-cd}}disabled{{/unless}}>
-          <label class="mdl-textfield__label" for="mt-cd-voice">Voices...</label>
-          <span class="mdl-textfield__error">Input is not a voice pair!</span>
+        <div class="selectGroup">
+          <label class="select_label" for="mt-cd-voice1">Voice pairs</label><br/>
+          <span class="group">
+            <select class="dialog_select" name="mt-cd-voice1" id="mt-cd-voice1">
+              {{#each voices}}
+              <option value="{{this}}">{{this}}</option>
+              {{/each}}
+            </select>
+            <select class="dialog_select" name="mt-cd-voice2" id="mt-cd-voice2">
+              {{#each voices}}
+              <option value="{{this}}">{{this}}</option>
+              {{/each}}
+            </select>
+          </span>
+        </div>
+        <div data-pair="true" data-for="mt-cd">
+          <button class="addVoice mdl-button mdl-js-button mdl-button--icon" {{#unless types.mt-cd}}disabled{{/unless}}>
+            <i class="material-icons">add</i>
+          </button>
         </div>
       </div>
     </div>
@@ -116,10 +146,20 @@ let score_assertion_tpl = `
         <i class="material-icons clickable">arrow_drop_down</i>
       </button>
       <div class="rest" style="display:none">
-        <div class="mdl-textfield mdl-js-textfield mdl-textfield--floating-label">
-          <input class="mdl-textfield__input" type="text" pattern="[SATBQ6]+" id="mt-fg-voice" {{#unless types.mt-fg}}disabled{{/unless}} {{#if types.mt-fg}}value="{{types.mt-fg.voice}}"{{/if}}>
-          <label class="mdl-textfield__label" for="mt-fg-voice">Order of voices...</label>
-          <span class="mdl-textfield__error">Input is not a sequence of voices!</span>
+        <div class="selectGroup">
+          <label class="select_label" for="mt-fg-voice1">Voice</label><br/>
+          <span class="group">
+            <select class="dialog_select" name="mt-fg-voice1" id="mt-fg-voice1">
+              {{#each voices}}
+              <option value="{{this}}">{{this}}</option>
+              {{/each}}
+            </select>
+          </span>
+        </div>
+        <div data-for="mt-fg">
+          <button class="addVoice mdl-button mdl-js-button mdl-button--icon" {{#unless types.mt-fg}}disabled{{/unless}}>
+            <i class="material-icons">add</i>
+          </button>
         </div>
         <div class="mdl-textfield mdl-js-textfield mdl-textfield--floating-label">
           <input class="mdl-textfield__input" type="text" pattern="(\\d{1,2}[\+-]){1,}" id="mt-fg-int" {{#unless types.mt-fg}}disabled{{/unless}} {{#if types.mt-fg}}value="{{types.mt-fg.int}}"{{/if}}>
@@ -160,10 +200,25 @@ let score_assertion_tpl = `
         <i class="material-icons clickable">arrow_drop_down</i>
       </button>
       <div class="rest" style="display:none">
-        <div class="mdl-textfield mdl-js-textfield mdl-textfield--floating-label">
-          <input class="mdl-textfield__input" type="text" pattern="[SATBQ6]+" id="mt-id-voice" {{#if types.mt-id.voice}}value="{{types.mt-id.voice}}"{{/if}} {{#unless types.mt-id}}disabled{{/unless}}>
-          <label class="mdl-textfield__label" for="mt-id-voice">Order of voices...</label>
-          <span class="mdl-textfield__error">Input is not a sequence of voices!</span>
+        <div class="selectGroup">
+          <label class="select_label" for="mt-id-voice1">Voice pairs</label><br/>
+          <span class="group">
+            <select class="dialog_select" name="mt-id-voice1" id="mt-id-voice1">
+              {{#each voices}}
+              <option value="{{this}}">{{this}}</option>
+              {{/each}}
+            </select>
+            <select class="dialog_select" name="mt-id-voice2" id="mt-id-voice2">
+              {{#each voices}}
+              <option value="{{this}}">{{this}}</option>
+              {{/each}}
+            </select>
+          </span>
+        </div>
+        <div data-pair="true" data-for="mt-id">
+          <button class="addVoice mdl-button mdl-js-button mdl-button--icon" {{#unless types.mt-id}}disabled{{/unless}}>
+            <i class="material-icons">add</i>
+          </button>
         </div>
         <div class="mdl-textfield mdl-js-textfield mdl-textfield--floating-label">
           <input class="mdl-textfield__input" type="text" pattern="(\\d{1,2}[\+-]){1,}" id="mt-id-int" {{#if types.mt-id.int}}value="{{types.mt-id.int}}"{{/if}} {{#unless types.mt-id}}disabled{{/unless}}>
@@ -204,10 +259,20 @@ let score_assertion_tpl = `
         <i class="material-icons clickable">arrow_drop_down</i>
       </button>
       <div class="rest" style="display:none">
-        <div class="mdl-textfield mdl-js-textfield mdl-textfield--floating-label">
-          <input class="mdl-textfield__input" type="text" pattern="[SATBQ6]+" id="mt-pe-voice" {{#if types.mt-pe.voice}}value="{{types.mt-pe.voice}}"{{/if}} {{#unless types.mt-pe}}disable{{/unless}}>
-          <label class="mdl-textfield__label" for="mt-pe-voice">Order of voices...</label>
-          <span class="mdl-textfield__error">Input is not a sequence of voices!</span>
+        <div class="selectGroup">
+          <label class="select_label" for="mt-pe-voice1">Voice</label><br/>
+          <span class="group">
+            <select class="dialog_select" name="mt-pe-voice1" id="mt-pe-voice1">
+              {{#each voices}}
+              <option value="{{this}}">{{this}}</option>
+              {{/each}}
+            </select>
+          </span>
+        </div>
+        <div data-for="mt-pe">
+          <button class="addVoice mdl-button mdl-js-button mdl-button--icon" {{#unless types.mt-pe}}disabled{{/unless}}>
+            <i class="material-icons">add</i>
+          </button>
         </div>
         <div class="mdl-textfield mdl-js-textfield mdl-textfield--floating-label">
           <input class="mdl-textfield__input" type="text" pattern="(\\d{1,2}[\+-]){1,}" id="mt-pe-int" {{#if types.mt-pe.int}}value="{{types.mt-pe.int}}"{{/if}} {{#unless types.mt-pe}}disable{{/unless}}>
@@ -256,10 +321,25 @@ let score_assertion_tpl = `
         <i class="material-icons clickable">arrow_drop_down</i>
       </button>
       <div class="rest" style="display:none">
-        <div class="mdl-textfield mdl-js-textfield mdl-textfield--floating-label">
-          <input class="mdl-textfield__input" type="text" pattern="([SATBQ6]{2}(\/(?!$)|$))+" id="mt-nid-voice" {{#if types.mt-nid.voice}}value="{{types.mt-nid.voice}}"{{/if}} {{#unless types.mt-nid}}disabled{{/unless}}>
-          <label class="mdl-textfield__label" for="mt-nid-voice">Order of voices...</label>
-          <span class="mdl-textfield__error">Input is not a sequence of voices!</span>
+        <div class="selectGroup">
+          <label class="select_label" for="mt-nid-voice1">Voice pairs</label><br/>
+          <span class="group">
+            <select class="dialog_select" name="mt-nid-voice1" id="mt-nid-voice1">
+              {{#each voices}}
+              <option value="{{this}}">{{this}}</option>
+              {{/each}}
+            </select>
+            <select class="dialog_select" name="mt-nid-voice2" id="mt-nid-voice2">
+              {{#each voices}}
+              <option value="{{this}}">{{this}}</option>
+              {{/each}}
+            </select>
+          </span>
+        </div>
+        <div data-pair="true" data-for="mt-nid">
+          <button class="addVoice mdl-button mdl-js-button mdl-button--icon" {{#unless types.mt-nid}}disabled{{/unless}}>
+            <i class="material-icons">add</i>
+          </button>
         </div>
         <div class="mdl-textfield mdl-js-textfield mdl-textfield--floating-label">
           <input class="mdl-textfield__input" type="text" pattern="(\\d{1,2}[\+-]){1,}" id="mt-nid-int" {{#if types.mt-nid.int}}value="{{types.mt-nid.int}}"{{/if}} {{#unless types.mt-nid}}disabled{{/unless}}>
@@ -304,10 +384,20 @@ let score_assertion_tpl = `
         <i class="material-icons clickable">arrow_drop_down</i>
       </button>
       <div class="rest" style="display:none">
-        <div class="mdl-textfield mdl-js-textfield mdl-textfield--floating-label">
-          <input class="mdl-textfield__input" type="text" pattern="[SATBQ6]+6" id="mt-hr-voice" {{#if types.mt-hr.voice}}value="{{types.mt-hr.voice}}"{{/if}} {{#unless types.mt-hr}}disabled{{/unless}}>
-          <label class="mdl-textfield__label" for="mt-hr-voice">Voices...</label>
-          <span class="mdl-textfield__error">Input is not a sequence of voices!</span>
+        <div class="selectGroup">
+          <label class="select_label" for="mt-hr-voice1">Voice</label><br/>
+          <span class="group">
+            <select class="dialog_select" name="mt-hr-voice1" id="mt-hr-voice1">
+              {{#each voices}}
+              <option value="{{this}}">{{this}}</option>
+              {{/each}}
+            </select>
+          </span>
+        </div>
+        <div data-for="mt-hr">
+          <button class="addVoice mdl-button mdl-js-button mdl-button--icon" {{#unless types.mt-hr}}disabled{{/unless}}>
+            <i class="material-icons">add</i>
+          </button>
         </div>
         <div>
           <label class="mdl-radio mdl-js-radio mdl-js-ripple-effect" for="mt-hr-s">
@@ -338,10 +428,25 @@ let score_assertion_tpl = `
         <i class="material-icons clickable">arrow_drop_down</i>
       </button>
       <div class="rest" style="display:none">
-        <label class="mdl-radio mdl-js-radio mdl-js-ripple-effect" for="mt-cad-a">
+        <div class="selectGroup">
+          <label class="select_label" for="mt-cad-voice1">Voice</label><br/>
+          <span class="group">
+            <select class="dialog_select" name="mt-cad-voice1" id="mt-cad-voice1">
+              {{#each voices}}
+              <option value="{{this}}">{{this}}</option>
+              {{/each}}
+            </select>
+            <select class="dialog_select" name="mt-cad-voice2" id="mt-cad-voice2">
+              {{#each voices}}
+              <option value="{{this}}">{{this}}</option>
+              {{/each}}
+            </select>
+          </span>
+        </div>
+        <!--<label class="mdl-radio mdl-js-radio mdl-js-ripple-effect" for="mt-cad-a">
           <input type="radio" name="mt-int-options" id="mt-cad-a" class="mdl-radio__button" {{#if types.mt-cad.a}}checked{{/if}} {{#unless types.mt-cad}}disabled{{/unless}}>
           <span class="mdl-radio__label">Authentic</span>
-        </label>
+        </label>-->
         <label class="mdl-radio mdl-js-radio mdl-js-ripple-effect" for="mt-cad-ph">
           <input type="radio" name="mt-int-options" id="mt-cad-ph" class="mdl-radio__button" {{#if types.mt-cad.ph}}checked{{/if}} {{#unless types.mt-cad}}disabled{{/unless}}>
           <span class="mdl-radio__label">Phrygian</span>
@@ -351,7 +456,7 @@ let score_assertion_tpl = `
           <span class="mdl-radio__label">Plagal</span>
         </label>
         <div class="mdl-textfield mdl-js-textfield mdl-textfield--floating-label">
-          <input class="mdl-textfield__input" type="text" id="mt-cad-tone" {{#if types.mt-cad.tone}}value="{{types.mt-cad.tone}}"{{/if}} {{#unless types.mt-cad}}disabled{{/unless}} required>
+          <input class="mdl-textfield__input" type="text" pattern="[ABbCDEeFG]" id="mt-cad-tone" {{#if types.mt-cad.tone}}value="{{types.mt-cad.tone}}"{{/if}} {{#unless types.mt-cad}}disabled{{/unless}} required>
           <label class="mdl-textfield__label" for="mt-cad-tone">Final tone...</label>
         </div>
         <div class="mdl-textfield mdl-js-textfield mdl-textfield--floating-label">
@@ -360,7 +465,7 @@ let score_assertion_tpl = `
           <span class="mdl-textfield__error">Input is not a pair of voices!</span>
         </div>
         <div class="mdl-textfield mdl-js-textfield mdl-textfield--floating-label">
-          <input class="mdl-textfield__input" type="text" pattern="[SATBQ6]\\d{1,2}[+-]\\/" id="mt-cad-dove" {{#if types.mt-cad.dove}}value="{{types.mt-cad.dove}}"{{/if}} {{#unless types.mt-cad}}disabled{{/unless}}>
+          <input class="mdl-textfield__input" type="text" pattern="[SATBQ6]\\d{1,2}[+-]" id="mt-cad-dove" {{#if types.mt-cad.dove}}value="{{types.mt-cad.dove}}"{{/if}} {{#unless types.mt-cad}}disabled{{/unless}}>
           <label class="mdl-textfield__label" for="mt-cad-voice">Dovetail voice & interval...</label>
           <span class="mdl-textfield__error">Input is voices and interval!</span>
         </div>
@@ -375,11 +480,22 @@ let score_assertion_tpl = `
         <i class="material-icons clickable">arrow_drop_down</i>
       </button>
       <div class="rest" style="display:none">
-        <div class="mdl-textfield mdl-js-textfield mdl-textfield--floating-label">
-          <input class="mdl-textfield__input" type="text" pattern="[SATBQ6][SATBQ6]" id="mt-int-voice" {{#if types.mt-int.voice}}value="{{types.mt-int.voice}}"{{/if}} {{#unless types.mt-int}}disabled{{/unless}} required>
-          <label class="mdl-textfield__label" for="mt-int-voice">Voices...</label>
-          <span class="mdl-textfield__error">Input is not a pair of voices!</span>
+        <div class="selectGroup">
+          <label class="select_label" for="mt-int-voice1">Voice</label><br/>
+          <span class="group">
+            <select class="dialog_select" name="mt-int-voice1" id="mt-int-voice1">
+              {{#each voices}}
+              <option value="{{this}}">{{this}}</option>
+              {{/each}}
+            </select>
+            <select class="dialog_select" name="mt-int-voice2" id="mt-int-voice2">
+              {{#each voices}}
+              <option value="{{this}}">{{this}}</option>
+              {{/each}}
+            </select>
+          </span>
         </div>
+
         <label class="mdl-radio mdl-js-radio mdl-js-ripple-effect" for="mt-int-p6">
           <input type="radio" name="mt-int-options" id="mt-int-p6" class="mdl-radio__button" {{#if types.mt-int.p6}}checked{{/if}} {{#unless types.mt-int}}disabled{{/unless}}>
           <span class="mdl-radio__label">Parallel 6ths</span>

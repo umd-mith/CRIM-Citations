@@ -168,6 +168,7 @@ class ScoreView extends Backbone.View {
   newAssertion(new_assert){
     this.scoreAssertionDialog.ema = this.$el.find(".cnt-emaexpr-expr").text()
     this.scoreAssertionDialog.title = this.model.get("title")
+    this.scoreAssertionDialog.voices = this.model.get("voices")
     this.scoreAssertionDialog.mei_ids = this.continuo.selectedElements
     this.showAssertion(new_assert)
     // this.continuo.clearSelection()
