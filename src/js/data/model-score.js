@@ -4,8 +4,24 @@ import ScoreAssertions from './coll-score-assertions'
 
 class Score extends Backbone.Model {
   initialize() {
-      this.assertions = new ScoreAssertions;
+      this.assertions = new ScoreAssertions
+      this.assertions.score = this.cid
       this.storeVoices()
+  }
+
+  toJSON() {
+    var json = Backbone.Model.prototype.toJSON.apply(this, arguments);
+    json.cid = this.cid;
+    return json;
+  }
+
+  export() {
+    var json = this.toJSON()
+    delete json.mei;
+    delete json.hasSelection;
+    delete json.mei_ids;
+    delete json.ema;
+    return json;
   }
 
   newAssertion() {

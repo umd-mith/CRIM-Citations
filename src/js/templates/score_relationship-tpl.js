@@ -163,6 +163,7 @@ let score_relationship_tpl = `
       <textarea class="mdl-textfield__input" type="text" rows="5" id="rel-comment">{{#if comment}}{{comment}}{{/if}}</textarea>
       <label class="mdl-textfield__label" for="rel-comment">Comment...</label>
     </div>
+    <div class="messages mdl-shadow--2dp"></div>
   </div>
   <div class="mdl-dialog__actions">
     <button type="button" class="mdl-button mdl-button--accent" id="save_score_relationship">Save</button>

@@ -9,6 +9,7 @@ class ScoreAssertion extends Backbone.Model {
   toJSON() {
     var json = Backbone.Model.prototype.toJSON.apply(this, arguments);
     json.cid = this.cid;
+    json.score = this.collection.score;
     return json;
   }
 }

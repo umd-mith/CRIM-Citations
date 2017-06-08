@@ -87,10 +87,15 @@ class ScoreAssertion extends Backbone.View {
         this.model.get("types")[DOMid] = type_data
       }
     })
-    this.close()
-    this.model.collection.trigger("savedAssert")
-    // Events.trigger("ema:reset")
-    // console.log(this.model.get("types"))
+    if (Object.keys(this.model.get("types")).length == 0) {
+      let msg = this.$el.find(".messages").show().text("Please choose a musical type.")
+    }
+    else {
+      this.close()
+      this.model.collection.trigger("savedAssert")
+      // Events.trigger("ema:reset")
+      // console.log(this.model.get("types"))
+    }
   }
 
   // Voice handling is ugly, but needed to be done hastily.

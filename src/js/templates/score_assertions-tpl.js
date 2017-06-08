@@ -16,7 +16,7 @@ let score_assertion_tpl = `
           </span>
           <span class="mdl-list__item-secondary-action">
             <i class="material-icons edit_relationship clickable" title="edit relationship">mode_edit</i>
-            <i class="material-icons rel_preview" title="preview first measure">remove_red_eye</i>
+            <i class="material-icons rel_preview" title="preview first measure on this score">remove_red_eye</i>
           </span>
         </li>
        {{/each}}
@@ -48,6 +48,10 @@ let score_assertion_tpl = `
     <button type="button" class="mdl-button close">Close</button>
   </div>
   <div class="score_preview_cnt mdl-shadow--2dp" style="display:none">
+    <div class="score_preview"></div>
+    <i class="material-icons score_preview_close">close</i>
+  </div>
+  <div class="score_preview_cntB mdl-shadow--2dp" style="display:none">
     <div class="score_preview"></div>
     <i class="material-icons score_preview_close">close</i>
   </div>

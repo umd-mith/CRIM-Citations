@@ -189,7 +189,7 @@ let score_assertion_tpl = `
     <div class="mdl-shadow--2dp types">
       <label for="mt-id" class="mdl-checkbox mdl-js-checkbox mdl-js-ripple-effect">
         <input type="checkbox" id="mt-id" class="mdl-checkbox__input cb" {{#if types.mt-id}}checked{{/if}}>
-        <span class="mdl-checkbox__label">Imitative Duo</span>
+        <span class="mdl-checkbox__label">Imitative Duos</span>
       </label>
       <button class="mdl-button mdl-js-button mdl-button--icon drop">
         <i class="material-icons clickable">arrow_drop_down</i>
@@ -538,6 +538,7 @@ let score_assertion_tpl = `
       <textarea class="mdl-textfield__input" type="text" rows="5" id="assert-comment">{{#if comment}}{{comment}}{{/if}}</textarea>
       <label class="mdl-textfield__label" for="assert-comment">Comment...</label>
     </div>
+    <div class="messages mdl-shadow--2dp"></div>
   </div>
   <div class="mdl-dialog__actions">
     <button type="button" class="mdl-button mdl-button--accent" id="save_score_assertion">Save</button>

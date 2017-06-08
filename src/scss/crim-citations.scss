@@ -93,6 +93,13 @@
     right: 10px;
     padding: 5px;
   }
+  .score_preview_cnt2 {
+    position: absolute;
+    background: white;
+    top: 50px;
+    right: 50px;
+    padding: 5px;
+  }
 
   .score_preview_close {
     position: absolute !important;
@@ -185,4 +192,11 @@ svg {
   color: rgb(96,125,139);
   font-size: 12px;
   top: 4px;
+}
+
+.messages {
+  display: none;
+  background-color: #ffb944!important;
+  color: black;
+  padding: 5px;
 }

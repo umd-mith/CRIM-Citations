@@ -10,6 +10,12 @@ class ScoreAssertions extends Backbone.View {
   initialize(options){
     this.container = options.container
     this.score = options.score
+    this.preview_opts = {
+        pageWidth: 150 * 100 / 35,
+        pageHeight: 150 * 100 / 35,
+        border: 0,
+        scale: 35
+    }
   }
 
   template(tpl){
@@ -57,7 +63,7 @@ class ScoreAssertions extends Backbone.View {
   edit(e) {
     let assertid = $(e.target).closest("li").data("assertionid")
     this.close()
-    Events.trigger("edit_assertion", assertid)
+    this.collection.trigger("edit_assertion", assertid)
   }
 
   editRel(e){
@@ -70,14 +76,7 @@ class ScoreAssertions extends Backbone.View {
 
     let assert = this.collection.get($(e.target).closest("li").data("assertionid"))
 
-    let opts = {
-        pageWidth: 150 * 100 / 35,
-        pageHeight: 150 * 100 / 35,
-        border: 0,
-        scale: 35
-    };
-
-    verovioToolkit.setOptions(opts)
+    verovioToolkit.setOptions(this.preview_opts)
     verovioToolkit.redoLayout()
 
     let page = verovioToolkit.getPageWithElement(assert.get("mei_ids")[0])
@@ -96,6 +95,31 @@ class ScoreAssertions extends Backbone.View {
   }
 
   relPreview(e) {
+    let relid = $(e.target).closest("li").data("relid")
+
+    verovioToolkit.setOptions(this.preview_opts)
+    verovioToolkit.redoLayout()
+
+    let rel = this.relationships.filter((rel)=>{
+      return rel.cid == relid
+    })[0]
+
+    let score = rel.get("scoreA") == this.score ? "A" : "B"
+
+    let mei_ids = rel.get("score"+score+"_meiids")
+
+    let page = verovioToolkit.getPageWithElement(mei_ids[0])
+    let svg = verovioToolkit.renderPage(page)
+
+    this.$el.find(".score_preview").html(svg)
+    for (let id of mei_ids) {
+        let el = this.$el.find("#"+id)
+        if (el.length > 0) {
+            el.get(0).setAttribute("class", "preview_selected")
+        }
+    }
+
+    this.$el.find(".score_preview_cnt").show()
 
   }
 
@@ -112,6 +136,7 @@ class ScoreAssertions extends Backbone.View {
         this.listenTo(Events, "response:relationships", (rels) => res(rels))
         Events.trigger("request:relationshipsFor", this.score)
       }).then((rels)=>{
+        this.relationships = rels
         let json = {assertions: this.collection.toJSON(), relationships: (new Backbone.Collection(rels)).toJSON()}
         this.container.append(this.$el.html(this.template(json)))
         if (! this.el.showModal) {

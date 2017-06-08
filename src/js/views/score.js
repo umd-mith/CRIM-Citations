@@ -14,10 +14,12 @@ class ScoreView extends Backbone.View {
     this.scoreAssertionDialog = new ScoreAssertionView({container: $("#dialogs"), collection: this.model.assertions})
     this.scoreAssertionsDialog = new ScoreAssertionsView({container: $("#dialogs"), collection: this.model.assertions, score: this.model.cid})
 
+    this.listenTo(this.model.assertions, "edit_assertion", this.showAssertion)
     this.listenTo(this.model, "edit_assertion", this.showAssertion)
     this.listenTo(this.model, "new_assertion", this.newAssertion)
     this.listenTo(this.scoreAssertionsDialog, "redoVerovioLayout", this.doVerovioLayout)
     this.listenTo(this.model, "redoVerovioLayout", this.doVerovioLayout)
+    this.listenTo(this.model, "highlight", (ids)=>{this.continuo.highlight(ids)})
     this.listenTo(this.model, "showRelationshipButton", ()=>{this.$el.find(".show-score-relationship").show()})
     this.listenTo(this.model.collection, "hideRelationshipButtons", ()=>{this.$el.find(".show-score-relationship").hide()})
     this.listenTo(this.model.collection, "clearScoreSelections", ()=>{this.continuo.clearSelection(); this.$el.find(".show-score-relationship").hide()})
@@ -80,6 +82,7 @@ class ScoreView extends Backbone.View {
   }
 
   doVerovioLayout() {
+    console.log('h')
     verovioToolkit.setOptions(this.verovioOpts)
     verovioToolkit.redoLayout()
   }

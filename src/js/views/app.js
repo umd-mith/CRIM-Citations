@@ -32,7 +32,8 @@ class AppView extends Backbone.View {
 
   get events() {
       return {
-        "click #add_btn": this.showAddFileDialog
+        "click #add_btn": this.showAddFileDialog,
+        "click #export_btn": this.export
       }
   }
 
@@ -97,6 +98,17 @@ class AppView extends Backbone.View {
       }
     }
     else this.scores.trigger("hideRelationshipButtons")
+  }
+
+  export(){
+    let export_obj = {
+      relationships : this.relationships.toJSON(),
+      scores: this.scores.export(),
+      assertions: this.scores.exportAssertions()
+    }
+    console.log(export_obj)
+    return export_obj
+    // let scores_info = this.scores.export()
   }
 
 }

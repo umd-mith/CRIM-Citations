@@ -74,9 +74,19 @@ class ScoreRelationship extends Backbone.View {
         })
         this.model.get("types")[DOMid] = type_data
       }
+      else {
+        delete this.model.get("types")[DOMid]
+      }
     })
-    this.scores[0].collection.trigger("clearScoreSelections")
-    this.close()
+
+    if (Object.keys(this.model.get("types")).length == 0) {
+      let msg = this.$el.find(".messages").show().text("Please choose a relationship type.")
+    }
+    else {
+      this.scores[0].collection.trigger("clearScoreSelections")
+      this.close()
+      console.log(this.model.get("types"))
+    }
   }
 
   show() {
@@ -108,7 +118,7 @@ class ScoreRelationship extends Backbone.View {
   }
 
   stopHideMode() {
-    if (!this.$el.attr("open")) {
+    if (this.$el.parent() == length >0 && !this.$el.attr("open")) {
       this.el.showModal()
     }
   }
@@ -131,17 +141,29 @@ class ScoreRelationship extends Backbone.View {
     }
   }
 
-  updateAssert(score_place){
-    let assert_id = this.model.get("score"+score_place+"assert")
-    let score_idx = score_place == "A" ? 0 : 1
-    console.log(this.scores[score_idx], assert_id)
-    let types = this.scores[score_idx].assertions.get(assert_id).get("types")
-    if (types) {
-      let labels = []
-      for (let type in types){
-        labels.push(types[type].label)
+  updateAssert(){
+    let assert_A_id = this.model.get("scoreAassert")
+    let assert_B_id = this.model.get("scoreBassert")
+
+    if (assert_A_id && this.scores[0].assertions.get(assert_A_id)) {
+      let types = this.scores[0].assertions.get(assert_A_id).get("types")
+      if (types) {
+        let labels = []
+        for (let type in types){
+          labels.push(types[type].label)
+        }
+        this.$el.find(".assert_typesA").html("("+labels.join(", ")+")")
       }
-      this.$el.find(".assert_types"+score_place).html("("+labels.join(", ")+")")
+    }
+    if (assert_B_id  && this.scores[1].assertions.get(assert_B_id)) {
+      let types = this.scores[1].assertions.get(assert_B_id).get("types")
+      if (types) {
+        let labels = []
+        for (let type in types){
+          labels.push(types[type].label)
+        }
+        this.$el.find(".assert_typesB").html("("+labels.join(", ")+")")
+      }
     }
   }
 
@@ -200,11 +222,20 @@ class ScoreRelationship extends Backbone.View {
     this.scores[0].trigger("redoVerovioLayout")
   }
 
+  highlightNotation() {
+    if (!this.scores[0].get("hasSelection")){
+      this.scores[0].trigger("highlight", this.model.get("scoreA_meiids"));
+    }
+    if (!this.scores[1].get("hasSelection")){
+      this.scores[1].trigger("highlight", this.model.get("scoreB_meiids"));
+    }
+  }
+
   render(scores, rel) {
     this.scores = scores
 
-    this.listenTo(scores[0].assertions, "savedAssert", ()=>{this.updateAssert("A")})
-    this.listenTo(scores[1].assertions, "savedAssert", ()=>{this.updateAssert("B")})
+    this.listenTo(scores[0].assertions, "savedAssert", this.updateAssert)
+    this.listenTo(scores[1].assertions, "savedAssert", this.updateAssert)
 
     if (rel) {
       this.model = this.collection.get(rel)
@@ -229,6 +260,9 @@ class ScoreRelationship extends Backbone.View {
     if(!(typeof(componentHandler) == 'undefined')){
         componentHandler.upgradeAllRegistered();
     }
+
+    this.updateAssert()
+    this.highlightNotation()
   }
 
 }

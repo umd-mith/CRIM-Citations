@@ -7,6 +7,20 @@ class Scores extends Backbone.Collection {
         this.model = Score;
     }
 
+    exportAssertions(){
+      return this.models.reduce((acc, score)=>{
+        acc = acc.concat(score.assertions.toJSON())
+        return acc
+      }, [])
+    }
+
+    export(){
+      return this.models.reduce((acc, score)=>{
+        acc.push(score.export())
+        return acc
+      }, [])
+    }
+
 }
 
 export default Scores;
