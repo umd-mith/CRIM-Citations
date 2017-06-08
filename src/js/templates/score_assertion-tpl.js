@@ -130,11 +130,6 @@ let score_assertion_tpl = `
             </select>
           </span>
         </div>
-        <div data-pair="true" data-for="mt-cd">
-          <button class="addVoice mdl-button mdl-js-button mdl-button--icon" {{#unless types.mt-cd}}disabled{{/unless}}>
-            <i class="material-icons">add</i>
-          </button>
-        </div>
       </div>
     </div>
     <div class="mdl-shadow--2dp types">
@@ -443,10 +438,10 @@ let score_assertion_tpl = `
             </select>
           </span>
         </div>
-        <!--<label class="mdl-radio mdl-js-radio mdl-js-ripple-effect" for="mt-cad-a">
-          <input type="radio" name="mt-int-options" id="mt-cad-a" class="mdl-radio__button" {{#if types.mt-cad.a}}checked{{/if}} {{#unless types.mt-cad}}disabled{{/unless}}>
+        <label class="mdl-radio mdl-js-radio mdl-js-ripple-effect" for="mt-cad-a">
+          <input type="radio" name="mt-int-options" id="mt-cad-a" class="mdl-radio__button" {{#if types.mt-cad.a}}checked{{/if}} {{#unless types.mt-cad}}checked disabled{{/unless}}>
           <span class="mdl-radio__label">Authentic</span>
-        </label>-->
+        </label>
         <label class="mdl-radio mdl-js-radio mdl-js-ripple-effect" for="mt-cad-ph">
           <input type="radio" name="mt-int-options" id="mt-cad-ph" class="mdl-radio__button" {{#if types.mt-cad.ph}}checked{{/if}} {{#unless types.mt-cad}}disabled{{/unless}}>
           <span class="mdl-radio__label">Phrygian</span>
@@ -459,15 +454,20 @@ let score_assertion_tpl = `
           <input class="mdl-textfield__input" type="text" pattern="[ABbCDEeFG]" id="mt-cad-tone" {{#if types.mt-cad.tone}}value="{{types.mt-cad.tone}}"{{/if}} {{#unless types.mt-cad}}disabled{{/unless}} required>
           <label class="mdl-textfield__label" for="mt-cad-tone">Final tone...</label>
         </div>
-        <div class="mdl-textfield mdl-js-textfield mdl-textfield--floating-label">
-          <input class="mdl-textfield__input" type="text" pattern="[SATBQ6][SATBQ6]" id="mt-cad-voice" {{#if types.mt-cad.voice}}value="{{types.mt-cad.voice}}"{{/if}} {{#unless types.mt-cad}}disabled{{/unless}} required>
-          <label class="mdl-textfield__label" for="mt-cad-voice">Voice roles...</label>
-          <span class="mdl-textfield__error">Input is not a pair of voices!</span>
+        <div class="selectGroup">
+          <label class="select_label" for="mt-cad-dove_voice1">Dovetail voice</label><br/>
+          <span class="group">
+            <select class="dialog_select" name="mt-cad-dove_voice1" id="mt-cad-dove_voice1">
+              {{#each voices}}
+              <option value="{{this}}">{{this}}</option>
+              {{/each}}
+            </select>
+          </span>
         </div>
         <div class="mdl-textfield mdl-js-textfield mdl-textfield--floating-label">
-          <input class="mdl-textfield__input" type="text" pattern="[SATBQ6]\\d{1,2}[+-]" id="mt-cad-dove" {{#if types.mt-cad.dove}}value="{{types.mt-cad.dove}}"{{/if}} {{#unless types.mt-cad}}disabled{{/unless}}>
-          <label class="mdl-textfield__label" for="mt-cad-voice">Dovetail voice & interval...</label>
-          <span class="mdl-textfield__error">Input is voices and interval!</span>
+          <input class="mdl-textfield__input" type="text" pattern="\\d{1,2}[+-]" id="mt-cad-dove" {{#if types.mt-cad.dove}}value="{{types.mt-cad.dove}}"{{/if}} {{#unless types.mt-cad}}disabled{{/unless}}>
+          <label class="mdl-textfield__label" for="mt-cad-voice">Dovetail interval...</label>
+          <span class="mdl-textfield__error">Input is not an interval!</span>
         </div>
       </div>
     </div>
