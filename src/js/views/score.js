@@ -15,6 +15,8 @@ class ScoreView extends Backbone.View {
     this.scoreAssertionsDialog = new ScoreAssertionsView({container: $("#dialogs"), collection: this.model.assertions, score: this.model.cid})
 
     this.listenTo(this.model.assertions, "edit_assertion", this.showAssertion)
+    this.listenTo(this.model.assertions, "delete_assertion", this.deleteAssertion)
+    this.listenTo(this.model.collection, "delete_assertion", this.deleteAssertion)
     this.listenTo(this.model, "edit_assertion", this.showAssertion)
     this.listenTo(this.model, "new_assertion", this.newAssertion)
     this.listenTo(this.scoreAssertionsDialog, "redoVerovioLayout", this.doVerovioLayout)
@@ -52,7 +54,8 @@ class ScoreView extends Backbone.View {
           "click .collapse_expand_button": this.toggle,
           "click .show-score-assertions": this.showAssertions,
           // "click .show-score-assertion": this.newAssertion,
-          "click .show-score-relationship": this.showRelationship
+          "click .show-score-relationship": this.showRelationship,
+          "click .close_score_button": this.close
       }
   }
 
@@ -157,6 +160,10 @@ class ScoreView extends Backbone.View {
     this.$el.find(".expand_icon").toggle()
   }
 
+  deleteAssertion(assert) {
+    this.model.assertions.remove(assert)
+  }
+
   showAssertions() {
     this.scoreAssertionsDialog.render().then(()=>{
       // Assumes MDL JS
@@ -222,6 +229,26 @@ class ScoreView extends Backbone.View {
     this.$el.find(".show-score-relationship").attr("disabled", false)
     this.$el.find(".show-score-assertions").attr("disabled", false)
     this.$el.find(".mask").remove()
+  }
+
+  close(){
+    // only close if it's not a target of a relationship or assertion
+    new Promise((res, rej)=>{
+      this.listenTo(Events, "response:relationships", (rels) => res(rels))
+      Events.trigger("request:relationshipsFor", this.model.cid)
+    }).then((rels)=>{
+      if (this.model.assertions.models.length == 0 && rels.length == 0) {
+        let r = confirm("Are you sure you want to close this score?")
+        if (r) {
+          this.remove()
+          this.$el.detach()
+          this.$el.remove()
+        }
+      }
+      else {
+        alert("Cannot close this score because it contains relationships or assertions.")
+      }
+    })
   }
 
 }

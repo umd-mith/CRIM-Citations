@@ -7,8 +7,9 @@ let score_assertion_tpl = `
     {{#if relationships}}
       <ul class="mdl-list">
       {{#each relationships}}
-        <li class="mdl-list__item" data-relid="{{this.cid}}">
+        <li class="mdl-list__item rel_item" id="i_{{this.cid}}" data-relid="{{this.cid}}">
           <span class="mdl-list__item-primary-content">
+            <i class="material-icons delete_item clickable" title="edit relationship">delete_forever</i>
             <span class="truncate truncate_short">{{this.titleA}}</span>
             <i class="material-icons">{{#if this.boolDir}}arrow_forward{{else}}arrow_back{{/if}}</i>
             <span class="truncate truncate_short">{{this.titleB}}</span>
@@ -28,9 +29,9 @@ let score_assertion_tpl = `
     {{#if assertions.length}}
     <ul class="mdl-list">
       {{#each assertions}}
-      <li class="mdl-list__item" data-assertionid="{{this.cid}}">
+      <li class="mdl-list__item rel_item" id="i_{{this.cid}}" data-assertionid="{{this.cid}}">
         <span class="mdl-list__item-primary-content">
-          <!--<i class="material-icons delete_assertion" title="delete">close</i>-->
+          <i class="material-icons delete_item clickable" title="edit relationship">delete_forever</i>
           <span class="truncate">{{this.ema}}</span> <span class="truncate">({{#each this.types}}{{label}}{{#unless @last}},{{/unless}}{{/each}})</span>
         </span>
         <span class="mdl-list__item-secondary-action">

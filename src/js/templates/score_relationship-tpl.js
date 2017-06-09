@@ -87,6 +87,10 @@ let score_relationship_tpl = `
           <input type="checkbox" id="rt-tm-minv" class="mdl-checkbox__input" {{#if types.rt-tm.minv}}checked{{/if}} {{#unless types.rt-tm}}disabled{{/unless}}>
           <span class="mdl-checkbox__label">Melodically inverted</span>
         </label>
+        <label class="mdl-checkbox mdl-js-checkbox mdl-js-ripple-effect" for="rt-tm-r">
+          <input type="checkbox" id="rt-tm-r" class="mdl-checkbox__input" {{#if types.rt-tm.r}}checked{{/if}} {{#unless types.rt-tm}}disabled{{/unless}}>
+          <span class="mdl-checkbox__label">In retrograde</span>
+        </label>
         <label class="mdl-checkbox mdl-js-checkbox mdl-js-ripple-effect" for="rt-tm-ms">
           <input type="checkbox" id="rt-tm-ms" class="mdl-checkbox__input" {{#if types.rt-tm.ms}}checked{{/if}} {{#unless types.rt-tm}}disabled{{/unless}}>
           <span class="mdl-checkbox__label">Metrically shifted (counterpoint with new time interval)</span>
@@ -98,10 +102,6 @@ let score_relationship_tpl = `
         <label class="mdl-checkbox mdl-js-checkbox mdl-js-ripple-effect" for="rt-tm-td">
           <input type="checkbox" id="rt-tm-td" class="mdl-checkbox__input" {{#if types.rt-tm.td}}checked{{/if}} {{#unless types.rt-tm}}disabled{{/unless}}>
           <span class="mdl-checkbox__label">Transposed different amounts (double or invertible cpt)</span>
-        </label>
-        <label class="mdl-checkbox mdl-js-checkbox mdl-js-ripple-effect" for="rt-tm-mir">
-          <input type="checkbox" id="rt-tm-mir" class="mdl-checkbox__input" {{#if types.rt-tm.mir}}checked{{/if}} {{#unless types.rt-tm}}disabled{{/unless}}>
-          <span class="mdl-checkbox__label">In mirror inversion</span>
         </label>
       </div>
     </div>

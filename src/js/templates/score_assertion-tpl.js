@@ -183,6 +183,14 @@ let score_assertion_tpl = `
             <input type="checkbox" id="mt-fg-se" class="mdl-checkbox__input" {{#unless types.mt-fg}}disabled{{/unless}} {{#if types.mt-fg.se}}checked{{/if}}>
             <span class="mdl-checkbox__label">Sequential entries</span>
           </label>
+          <label class="mdl-checkbox mdl-js-checkbox mdl-js-ripple-effect" for="mt-fg-ie">
+            <input type="checkbox" id="mt-fg-ie" class="mdl-checkbox__input" {{#unless types.mt-fg}}disabled{{/unless}} {{#if types.mt-fg.ie}}checked{{/if}}>
+            <span class="mdl-checkbox__label">Inverted entries</span>
+          </label>
+          <label class="mdl-checkbox mdl-js-checkbox mdl-js-ripple-effect" for="mt-fg-re">
+            <input type="checkbox" id="mt-fg-re" class="mdl-checkbox__input" {{#unless types.mt-fg}}disabled{{/unless}} {{#if types.mt-fg.re}}checked{{/if}}>
+            <span class="mdl-checkbox__label">Retrograde entries</span>
+          </label>
         </div>
       </div>
     </div>

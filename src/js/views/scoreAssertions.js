@@ -16,6 +16,9 @@ class ScoreAssertions extends Backbone.View {
         border: 0,
         scale: 35
     }
+
+    this.listenTo(this.collection, "remove", this.removeItem)
+
   }
 
   template(tpl){
@@ -37,7 +40,8 @@ class ScoreAssertions extends Backbone.View {
           "click .selection_preview": this.preview,
           "click .rel_preview": this.relPreview,
           "click .edit_relationship": this.editRel,
-          "click .score_preview_close": this.closePreview
+          "click .score_preview_close": this.closePreview,
+          "click .delete_item": this.deleteItem
       }
   }
 
@@ -70,6 +74,26 @@ class ScoreAssertions extends Backbone.View {
     let relid = $(e.target).closest("li").data("relid")
     this.close()
     Events.trigger("edit_relationship", relid)
+  }
+
+  deleteItem(e) {
+    let rel = $(e.target).closest("li").data("relid")
+    let assert = $(e.target).closest("li").data("assertionid")
+
+    let r = confirm("Are you sure you want to delete this item? (Cannot undo)")
+
+    if (r && rel) {
+      Events.trigger("delete_relationship", rel)
+      this.$el.find("#i_"+rel).remove()
+    }
+    else if (r && assert) {
+      this.collection.trigger("delete_assertion", assert)
+    }
+  }
+
+  removeItem(item){
+    console.log(item)
+    this.$el.find("#i_"+item.cid).remove()
   }
 
   preview(e) {

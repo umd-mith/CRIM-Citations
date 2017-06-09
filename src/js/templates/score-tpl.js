@@ -3,6 +3,9 @@ import * as Handlebars from 'handlebars';
 let pag_tpl = `
 <div class="score_header">
   <div class="mdl-layout__header-row">
+    <button class="mdl-button mdl-button--attention mdl-js-button mdl-button--icon close_score_button">
+      <i class="material-icons">close</i>
+    </button>
     <button class="mdl-button mdl-js-button mdl-button--icon collapse_expand_button">
       <i class="material-icons collapse_icon">vertical_align_center</i>
       <i class="material-icons expand_icon" style="display:none">fullscreen</i>

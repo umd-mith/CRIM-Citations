@@ -20,6 +20,7 @@ class AppView extends Backbone.View {
     this.listenTo(Events, "addScore", this.addScore)
     this.listenTo(Events, "relDialog:open", this.openRelDialog)
     this.listenTo(Events, "edit_relationship", (relid)=>{this.openRelDialog(undefined, relid)})
+    this.listenTo(Events, "delete_relationship", this.removeRel)
     this.listenTo(this.scores, "change", this.hasDoubleSection)
 
     this.listenTo(Events, "request:selections", ()=>{Events.trigger("response:selections", this.requestSelections())})
@@ -61,10 +62,6 @@ class AppView extends Backbone.View {
     }
     this.relationshipDialog.render(scores, rel)
     this.relationshipDialog.show()
-  }
-
-  render() {
-
   }
 
   startHideMode(dialog) {
@@ -109,6 +106,13 @@ class AppView extends Backbone.View {
     console.log(export_obj)
     return export_obj
     // let scores_info = this.scores.export()
+  }
+
+  removeRel(relid){
+    let rel = this.relationships.get(relid)
+    this.scores.trigger("delete_assertion", rel.get("scoreAassert"))
+    this.scores.trigger("delete_assertion", rel.get("scoreBassert"))
+    this.relationships.remove(relid)
   }
 
 }
