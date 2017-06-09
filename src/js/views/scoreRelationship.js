@@ -44,6 +44,8 @@ class ScoreRelationship extends Backbone.View {
     if (Object.keys(this.model.get("types")).length == 0) {
         this.collection.remove(this.model.cid);
     }
+    this.scores[0].trigger("clearHighlight")
+    this.scores[1].trigger("clearHighlight")   
     this.scores[0].trigger("redoVerovioLayout")
   }
 
@@ -103,6 +105,8 @@ class ScoreRelationship extends Backbone.View {
   }
 
   close() {
+    this.scores[0].trigger("clearHighlight")
+    this.scores[1].trigger("clearHighlight")
     this.el.close();
     this.$el.detach();
     this.scores[0].trigger("redoVerovioLayout")
@@ -113,8 +117,10 @@ class ScoreRelationship extends Backbone.View {
   }
 
   startHideMode() {
-    this.el.close()
-    this.scores[0].trigger("redoVerovioLayout")
+    if (this.$el.attr("open")) {
+        this.el.close()
+        this.scores[0].trigger("redoVerovioLayout")
+    }
   }
 
   stopHideMode() {
@@ -134,9 +140,6 @@ class ScoreRelationship extends Backbone.View {
       this.model.set("score"+score_place+"assert", new_assert.cid)
     }
     else {
-      // this.$el.find('.assert_types').html(
-      //   "("+score.assertions.get(score_assert).get("types").join(", ")+")"
-      // )
       score.trigger("edit_assertion", score_assert_id)
     }
   }

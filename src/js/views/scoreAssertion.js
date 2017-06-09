@@ -39,6 +39,7 @@ class ScoreAssertion extends Backbone.View {
     if (Object.keys(this.model.get("types")).length == 0) {
         this.collection.remove(this.model.cid);
     }
+    this.score.trigger("clearHighlight")
   }
 
   hide() {
@@ -173,6 +174,12 @@ class ScoreAssertion extends Backbone.View {
     this.addRemoveVoice($cnt)
   }
 
+  highlightNotation() {
+    if (!this.score.get("hasSelection")){
+      this.score.trigger("highlight", this.mei_ids);
+    }
+  }
+
   showMusType(e) {
     $(e.target).closest('.types').find('.rest').toggle()
   }
@@ -205,6 +212,7 @@ class ScoreAssertion extends Backbone.View {
   }
 
   close() {
+    this.score.trigger("clearHighlight")
     this.el.close();
     Events.trigger("closedAssert")
     this.$el.detach();
@@ -228,6 +236,9 @@ class ScoreAssertion extends Backbone.View {
     if (! this.el.showModal) {
       dialogPolyfill.registerDialog(this.el);
     }
+
+    this.highlightNotation()
+
   }
 
 }

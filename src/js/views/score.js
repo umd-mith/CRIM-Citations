@@ -20,6 +20,7 @@ class ScoreView extends Backbone.View {
     this.listenTo(this.scoreAssertionsDialog, "redoVerovioLayout", this.doVerovioLayout)
     this.listenTo(this.model, "redoVerovioLayout", this.doVerovioLayout)
     this.listenTo(this.model, "highlight", (ids)=>{this.continuo.highlight(ids)})
+    this.listenTo(this.model, "clearHighlight", ()=>{this.continuo.clearHighlight()})
     this.listenTo(this.model, "showRelationshipButton", ()=>{this.$el.find(".show-score-relationship").show()})
     this.listenTo(this.model.collection, "hideRelationshipButtons", ()=>{this.$el.find(".show-score-relationship").hide()})
     this.listenTo(this.model.collection, "clearScoreSelections", ()=>{this.continuo.clearSelection(); this.$el.find(".show-score-relationship").hide()})
@@ -82,7 +83,6 @@ class ScoreView extends Backbone.View {
   }
 
   doVerovioLayout() {
-    console.log('h')
     verovioToolkit.setOptions(this.verovioOpts)
     verovioToolkit.redoLayout()
   }
@@ -125,6 +125,10 @@ class ScoreView extends Backbone.View {
   }
 
   nextPage() {
+    if (ScoreView.verovioData != this.model.cid) {
+        verovioToolkit.loadData(this.model.get("mei"))
+        ScoreView.verovioData = this.model.cid
+    }
     if (this.page + 1 <= verovioToolkit.getPageCount()) {
         this.page = this.page +1;
         this.continuo.renderPage(this.page)
@@ -132,6 +136,10 @@ class ScoreView extends Backbone.View {
   }
 
   prevPage() {
+    if (ScoreView.verovioData != this.model.cid) {
+        verovioToolkit.loadData(this.model.get("mei"))
+        ScoreView.verovioData = this.model.cid
+    }
     if (this.page - 1 > 0) {
         this.page = this.page - 1;
         this.continuo.renderPage(this.page)
@@ -170,6 +178,7 @@ class ScoreView extends Backbone.View {
 
   newAssertion(new_assert){
     this.scoreAssertionDialog.ema = this.$el.find(".cnt-emaexpr-expr").text()
+    this.scoreAssertionDialog.score = this.model
     this.scoreAssertionDialog.title = this.model.get("title")
     this.scoreAssertionDialog.voices = this.model.get("voices")
     this.scoreAssertionDialog.mei_ids = this.continuo.selectedElements
@@ -205,7 +214,7 @@ class ScoreView extends Backbone.View {
     let $score = this.$el.find(".score")
     let $mask = $("<div class='mask'></div>")
     $mask.width($score.width())
-    $mask.height($score.height())
+    $mask.height($score.height()-45)
     $score.prepend($mask)
   }
 
