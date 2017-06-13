@@ -9,6 +9,7 @@ class ScoreAssertion extends Backbone.View {
 
   initialize(options){
     this.container = options.container
+    this.score = options.score
   }
 
   template(tpl){
@@ -176,7 +177,7 @@ class ScoreAssertion extends Backbone.View {
 
   highlightNotation() {
     if (!this.score.get("hasSelection")){
-      this.score.trigger("highlight", this.mei_ids);
+      this.score.trigger("highlight", this.model.get("mei_ids"));
     }
   }
 

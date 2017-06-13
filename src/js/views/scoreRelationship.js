@@ -45,7 +45,7 @@ class ScoreRelationship extends Backbone.View {
         this.collection.remove(this.model.cid);
     }
     this.scores[0].trigger("clearHighlight")
-    this.scores[1].trigger("clearHighlight")   
+    this.scores[1].trigger("clearHighlight")
     this.scores[0].trigger("redoVerovioLayout")
   }
 
@@ -87,7 +87,6 @@ class ScoreRelationship extends Backbone.View {
     else {
       this.scores[0].collection.trigger("clearScoreSelections")
       this.close()
-      console.log(this.model.get("types"))
     }
   }
 
@@ -227,11 +226,14 @@ class ScoreRelationship extends Backbone.View {
 
   highlightNotation() {
     if (!this.scores[0].get("hasSelection")){
-      this.scores[0].trigger("highlight", this.model.get("scoreA_meiids"));
+      this.scores[0].trigger("redoVerovioLayout")
+      this.scores[0].trigger("highlight", this.model.get("scoreA_meiids"))
     }
     if (!this.scores[1].get("hasSelection")){
+      this.scores[1].trigger("redoVerovioLayout")
       this.scores[1].trigger("highlight", this.model.get("scoreB_meiids"));
     }
+
   }
 
   render(scores, rel) {
@@ -247,14 +249,17 @@ class ScoreRelationship extends Backbone.View {
       this.model = this.collection.add({})
     }
 
-    this.model.set("scoreA", scores[0].cid)
-    this.model.set("scoreB", scores[1].cid)
-    this.model.set("scoreA_ema", scores[0].get("ema"))
-    this.model.set("scoreB_ema", scores[1].get("ema"))
-    this.model.set("scoreA_meiids", scores[0].get("mei_ids"))
-    this.model.set("scoreB_meiids", scores[1].get("mei_ids"))
-    this.model.set("titleA", scores[0].get("title"))
-    this.model.set("titleB", scores[1].get("title"))
+    if (!this.model.get("scoreA")){
+      this.model.set("scoreA", scores[0].cid)
+      this.model.set("scoreB", scores[1].cid)
+      this.model.set("scoreA_ema", scores[0].get("ema"))
+      this.model.set("scoreB_ema", scores[1].get("ema"))
+      this.model.set("scoreA_meiids", scores[0].get("mei_ids"))
+      this.model.set("scoreB_meiids", scores[1].get("mei_ids"))
+      this.model.set("titleA", scores[0].get("title"))
+      this.model.set("titleB", scores[1].get("title"))
+    }
+
     this.container.append(this.$el.html(this.template(this.model.toJSON())))
     if (! this.el.showModal) {
       dialogPolyfill.registerDialog(this.el);

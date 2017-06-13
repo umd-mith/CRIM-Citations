@@ -2,6 +2,7 @@ import $ from 'jquery';
 import * as Backbone from 'backbone';
 import Events from '../utils/backbone-events';
 import AddFile from './addFile';
+import Import from './import';
 import Scores from '../data/coll-scores';
 import ScoreView from './score';
 import Relationships from '../data/coll-relationships';
@@ -12,6 +13,7 @@ class AppView extends Backbone.View {
 
   initialize () {
     this.addFileDialog = new AddFile({container: $("#dialogs")})
+    this.importDialog = new Import({container: $("#dialogs")})
     this.scores = new Scores
     this.relationships = new Relationships
     this.relationshipDialog = new RelationshipView({container: $("#dialogs"), collection: this.relationships})
@@ -29,18 +31,25 @@ class AppView extends Backbone.View {
     this.listenTo(Events, "startHideMode", this.startHideMode)
     this.listenTo(Events, "stopHideMode", this.stopHideMode)
 
+    this.listenTo(Events, "import", this.importData)
+
   }
 
   get events() {
       return {
         "click #add_btn": this.showAddFileDialog,
-        "click #export_btn": this.export
+        "click #export_btn": this.export,
+        "click #import_btn": this.import
       }
   }
 
-  addScore(fileInfo) {
+  addScore(fileInfo, createnew=true) {
+    let title = fileInfo.filename
+    if (fileInfo.title){
+      title = fileInfo.composer + ": " + fileInfo.title
+    }
     let scoreView = new ScoreView({model:
-      this.scores.add({mei: fileInfo.string, title: fileInfo.filename, url: fileInfo.url})
+      this.scores.add({mei: fileInfo.string, title: title, url: fileInfo.url})
     })
     this.$el.find("#create_edit .mdl-grid").prepend(scoreView.render())
     scoreView.renderContinuoScore()
@@ -54,11 +63,6 @@ class AppView extends Backbone.View {
     if (!scores && rel){
       let mrel = this.relationships.get(rel)
       scores = [this.scores.get(mrel.get("scoreA")), this.scores.get(mrel.get("scoreB"))]
-
-      // Add selections to the scores...
-      let scoreA_ema = mrel.get("scoreA_ema")
-      let scoreB_ema = mrel.get("scoreB_ema")
-
     }
     this.relationshipDialog.render(scores, rel)
     this.relationshipDialog.show()
@@ -106,6 +110,75 @@ class AppView extends Backbone.View {
     console.log(export_obj)
     return export_obj
     // let scores_info = this.scores.export()
+  }
+
+  importMeiData(url){
+      // Go via Omas to bypass CORS
+      let omas_url = "http://mith.umd.edu/ema/"+encodeURIComponent(url)+"/all/all/@all"
+
+      return (new Promise((res, rej)=>{
+        $.get(omas_url, (data) => {
+          res(data)
+        }, 'text')
+          .fail((msg)=>{
+              console.log(msg);
+              rej()
+          })
+      }))
+
+  }
+
+  importData(data) {
+    for (let score of data.scores) {
+      let s = this.scores.add(score)
+      s.set("id", score.cid)
+      s.cid = score.cid
+
+      for (let assert of data.assertions){
+        if (assert.score == s.cid) {
+          let a = s.assertions.add(assert)
+          a.set("id", assert.cid)
+          a.cid = assert.cid
+        }
+      }
+
+      // Get mei
+      this.importMeiData(s.get("url")).then((mei)=>{
+        s.set("mei", mei)
+        let scoreView = new ScoreView({model: s})
+        this.$el.find("#create_edit .mdl-grid").prepend(scoreView.render())
+        scoreView.renderContinuoScore()
+      })
+
+    }
+
+    for (let rel of data.relationships) {
+        let r = this.relationships.add(rel)
+        r.set("id", rel.cid)
+        r.cid = rel.cid
+    }
+
+  }
+
+  doImport(){
+    this.relationships.reset()
+    this.scores.each((s)=>{
+      s.assertions.reset()
+      s.trigger("close", true)
+    })
+    this.scores.reset()
+    this.importDialog.show()
+  }
+
+  import() {
+    // if a relationship exists, warn that it will be lost
+    if (this.relationships.models.length > 0){
+      let r = confirm("All open scores will be clsoed and unsaved relationships will be lost: continue?")
+      if (r){
+        this.doImport()
+      }
+    }
+    else this.doImport()
   }
 
   removeRel(relid){

@@ -11,7 +11,7 @@ class ScoreView extends Backbone.View {
 
   initialize (options) {
     this.page = 1
-    this.scoreAssertionDialog = new ScoreAssertionView({container: $("#dialogs"), collection: this.model.assertions})
+    this.scoreAssertionDialog = new ScoreAssertionView({container: $("#dialogs"), collection: this.model.assertions, score: this.model})
     this.scoreAssertionsDialog = new ScoreAssertionsView({container: $("#dialogs"), collection: this.model.assertions, score: this.model.cid})
 
     this.listenTo(this.model.assertions, "edit_assertion", this.showAssertion)
@@ -19,9 +19,10 @@ class ScoreView extends Backbone.View {
     this.listenTo(this.model.collection, "delete_assertion", this.deleteAssertion)
     this.listenTo(this.model, "edit_assertion", this.showAssertion)
     this.listenTo(this.model, "new_assertion", this.newAssertion)
+    this.listenTo(this.model, "close", this.close)
     this.listenTo(this.scoreAssertionsDialog, "redoVerovioLayout", this.doVerovioLayout)
     this.listenTo(this.model, "redoVerovioLayout", this.doVerovioLayout)
-    this.listenTo(this.model, "highlight", (ids)=>{this.continuo.highlight(ids)})
+    this.listenTo(this.model, "highlight", this.highlight)
     this.listenTo(this.model, "clearHighlight", ()=>{this.continuo.clearHighlight()})
     this.listenTo(this.model, "showRelationshipButton", ()=>{this.$el.find(".show-score-relationship").show()})
     this.listenTo(this.model.collection, "hideRelationshipButtons", ()=>{this.$el.find(".show-score-relationship").hide()})
@@ -32,10 +33,7 @@ class ScoreView extends Backbone.View {
 
     // Eveytime the score container is touched, re-load its MEI data into Verovio (all score boxes are sharing ONE Verovio instance)
     this.$el.on("mousedown", ()=>{
-      if (ScoreView.verovioData != this.model.cid) {
-          verovioToolkit.loadData(this.model.get("mei"))
-          ScoreView.verovioData = this.model.cid
-      }
+      this.setData()
     })
   }
 
@@ -125,6 +123,18 @@ class ScoreView extends Backbone.View {
       this.model.set("hasSelection", false)
     })
 
+  }
+
+  setData(){
+    if (ScoreView.verovioData != this.model.cid) {
+        verovioToolkit.loadData(this.model.get("mei"))
+        ScoreView.verovioData = this.model.cid
+    }
+  }
+
+  highlight(ids){
+    this.setData()
+    this.continuo.highlight(ids)
   }
 
   nextPage() {
@@ -231,15 +241,18 @@ class ScoreView extends Backbone.View {
     this.$el.find(".mask").remove()
   }
 
-  close(){
+  close(force=false){
     // only close if it's not a target of a relationship or assertion
     new Promise((res, rej)=>{
       this.listenTo(Events, "response:relationships", (rels) => res(rels))
       Events.trigger("request:relationshipsFor", this.model.cid)
     }).then((rels)=>{
       if (this.model.assertions.models.length == 0 && rels.length == 0) {
-        let r = confirm("Are you sure you want to close this score?")
-        if (r) {
+        let r = false
+        if (!force) {
+          r = confirm("Are you sure you want to close this score?")
+        }
+        if (r || force) {
           this.remove()
           this.$el.detach()
           this.$el.remove()

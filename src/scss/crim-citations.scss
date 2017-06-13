@@ -204,3 +204,48 @@ svg {
 .rel_item {
   padding: 0 !important;
 }
+
+.import {
+  width: 500px !important;
+
+  .mdl-tabs__panel {
+    padding-top: 20px;
+    text-align: center;
+  }
+}
+
+.addFile {
+  width: 500px !important;
+  .mdl-tabs__panel {
+    padding-top: 20px;
+  }
+}
+
+.mdl-button--file {
+  input {
+    cursor: pointer;
+    height: 100%;
+    right: 0;
+    opacity: 0;
+    position: absolute;
+    top: 0;
+    width: 300px;
+    z-index: 4;
+  }
+}
+.mdl-textfield--file {
+  .mdl-textfield__input {
+    box-sizing: border-box;
+    width: calc(100% - 32px);
+  }
+  .mdl-button--file {
+    right: 0;
+  }
+}
+
+.direction{
+  label {
+    display: block;
+    margin-bottom: 10px;
+  }
+}

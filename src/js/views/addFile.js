@@ -10,6 +10,8 @@ class AddFile extends Backbone.View {
   initialize (options) {
     Dropbox.appKey = "gwuog2373cwj45g";
     this.container = options.container;
+    this.filebase = "http://92.154.49.37/CRIM/files/original/"
+    this.scores = []
   }
 
   get tagName(){
@@ -27,21 +29,37 @@ class AddFile extends Backbone.View {
   get events() {
       return {
           "click .close": this.close,
-          "click #from_url": this.fromUrl,
-          "click #from_dropbox": this.fromDropbox,
+          "click #openFile": this.open
+          // "click #from_url": this.fromUrl,
+          // "click #from_dropbox": this.fromDropbox,
       }
   }
 
-  fromUrl() {
-
+  open(e) {
+    if (this.$el.find("#crim-panel.is-active").length > 0){
+      for (let score of this.$el.find("#crim-panel .mdl-checkbox__input:checked")){
+        let $score = $(score)
+        this.fromUrl($score.val(), $score.data("composer"), $score.data("title") )
+      }
+    }
+    else {
+      this.fromUrl()
+    }
     this.close()
+  }
 
-    let url = this.$el.find("input").val().trim();
+  fromUrl(url, composer, title) {
+
+    if (!url){
+      url = this.$el.find("#url_input").val().trim();
+    }
     // Go via Omas to bypass CORS
     let omas_url = "http://mith.umd.edu/ema/"+encodeURIComponent(url)+"/all/all/@all"
 
     let fileInfo = {
         "filename": url.replace(/^.*[\\\/]/, ''),
+        "composer": composer,
+        "title": title,
         "url": url
     };
 
@@ -87,14 +105,15 @@ class AddFile extends Backbone.View {
   show() {
     // it it's detached, render.
     if (this.$el.parent().length == 0) {
-      this.render()
-      // Assumes MDL JS
-      if(!(typeof(componentHandler) == 'undefined')){
-          componentHandler.upgradeAllRegistered();
-      }
+      this.render().then(()=>{
+        // Assumes MDL JS
+        if(!(typeof(componentHandler) == 'undefined')){
+            componentHandler.upgradeAllRegistered();
+        }
+        this.el.showModal();
+      })
     }
-
-    this.el.showModal();
+    else this.el.showModal();
   }
 
   close() {
@@ -102,10 +121,25 @@ class AddFile extends Backbone.View {
   }
 
   render() {
-    this.container.append(this.$el.html(this.template()))
-    if (! this.el.showModal) {
-      dialogPolyfill.registerDialog(this.el);
-    }
+
+    // get files info
+    return $.get("http://92.154.49.37/CRIM/api/meifiles", (data)=>{
+      for (let score of data){
+        let fileinfo = {
+          title: score.item_title,
+          composer: score.composer,
+          url: this.filebase + score.files[0].filename,
+          id: "s"+score.files[0].id
+        }
+        this.scores.push(fileinfo)
+      }
+
+      this.container.append(this.$el.html(this.template({scores:this.scores})))
+      if (! this.el.showModal) {
+        dialogPolyfill.registerDialog(this.el);
+      }
+
+    }, 'json')
   }
 
 }
