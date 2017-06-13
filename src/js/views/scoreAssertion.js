@@ -227,8 +227,12 @@ class ScoreAssertion extends Backbone.View {
       this.model = this.collection.add({})
     }
     let jmodel = this.model.toJSON()
-    jmodel.ema = this.ema
-    jmodel.title = this.title
+    if (!this.model.get("ema")) {
+      jmodel.ema = this.ema
+    }
+    if (!this.model.get("title")) {
+      jmodel.title = this.title
+    }
     jmodel.voices = this.voices
     this.container.append(this.$el.html(this.template(jmodel)))
 

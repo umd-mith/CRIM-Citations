@@ -6,7 +6,9 @@ class Score extends Backbone.Model {
   initialize() {
       this.assertions = new ScoreAssertions
       this.assertions.score = this.cid
-      this.storeVoices()
+      if (!this.get("voices")){
+        this.storeVoices()        
+      }
   }
 
   toJSON() {

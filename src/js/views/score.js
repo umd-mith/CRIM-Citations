@@ -185,6 +185,9 @@ class ScoreView extends Backbone.View {
   }
 
   showAssertion(assert) {
+    if (!this.scoreAssertionDialog.voices){
+      this.scoreAssertionDialog.voices = this.model.get("voices")
+    }
     this.scoreAssertionDialog.render(assert)
     // Assumes MDL JS
     if(!(typeof(componentHandler) == 'undefined')){
