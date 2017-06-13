@@ -8,6 +8,7 @@ import ScoreView from './score';
 import Relationships from '../data/coll-relationships';
 import RelationshipView from './scoreRelationship';
 import HideModeComponent from './hideModeComponent';
+import saveAs from 'save-as';
 
 class AppView extends Backbone.View {
 
@@ -108,8 +109,13 @@ class AppView extends Backbone.View {
       assertions: this.scores.exportAssertions()
     }
     console.log(export_obj)
+
+    let string = JSON.stringify(export_obj)
+
+    let bb = new Blob([string], {"type":"application\/json"});
+    saveAs(bb, 'crim.json');
+
     return export_obj
-    // let scores_info = this.scores.export()
   }
 
   importMeiData(url){
