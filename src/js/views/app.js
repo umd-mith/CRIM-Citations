@@ -9,6 +9,7 @@ import Relationships from '../data/coll-relationships';
 import RelationshipView from './scoreRelationship';
 import HideModeComponent from './hideModeComponent';
 import saveAs from 'save-as';
+import getParameterByName from '../utils/paras'
 
 class AppView extends Backbone.View {
 
@@ -33,6 +34,8 @@ class AppView extends Backbone.View {
     this.listenTo(Events, "stopHideMode", this.stopHideMode)
 
     this.listenTo(Events, "import", this.importData)
+
+    this.user = getParameterByName("userId")
 
   }
 
@@ -103,17 +106,22 @@ class AppView extends Backbone.View {
   }
 
   export(){
+    let time = (new Date()).toISOString()
     let export_obj = {
       relationships : this.relationships.toJSON(),
       scores: this.scores.export(),
-      assertions: this.scores.exportAssertions()
+      assertions: this.scores.exportAssertions(),
+      created_at: time,
+      user: this.user
     }
-    console.log(export_obj)
+    // console.log(export_obj)
 
     let string = JSON.stringify(export_obj)
 
     let bb = new Blob([string], {"type":"application\/json"});
-    saveAs(bb, 'crim.json');
+    let filename = this.user ? this.user : "anonymous"
+    filename = filename + "_" + time + ".json"
+    saveAs(bb, filename);
 
     return export_obj
   }

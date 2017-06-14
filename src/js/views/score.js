@@ -23,10 +23,10 @@ class ScoreView extends Backbone.View {
     this.listenTo(this.scoreAssertionsDialog, "redoVerovioLayout", this.doVerovioLayout)
     this.listenTo(this.model, "redoVerovioLayout", this.doVerovioLayout)
     this.listenTo(this.model, "highlight", this.highlight)
-    this.listenTo(this.model, "clearHighlight", ()=>{this.continuo.clearHighlight()})
+    this.listenTo(this.model, "clearHighlight", ()=>{this.setData(); this.continuo.clearHighlight()})
     this.listenTo(this.model, "showRelationshipButton", ()=>{this.$el.find(".show-score-relationship").show()})
     this.listenTo(this.model.collection, "hideRelationshipButtons", ()=>{this.$el.find(".show-score-relationship").hide()})
-    this.listenTo(this.model.collection, "clearScoreSelections", ()=>{this.continuo.clearSelection(); this.$el.find(".show-score-relationship").hide()})
+    this.listenTo(this.model.collection, "clearScoreSelections", this.clearScoreSelections)
     this.listenTo(this.model.collection, "storeSelections", this.storeSelection)
     this.listenTo(this.model.collection, "disableButtons", this.disableButtons)
     this.listenTo(this.model.collection, "renableButtons", this.renableButtons)
@@ -130,6 +130,11 @@ class ScoreView extends Backbone.View {
         verovioToolkit.loadData(this.model.get("mei"))
         ScoreView.verovioData = this.model.cid
     }
+  }
+
+  clearScoreSelections(){
+    this.continuo.clearSelection()
+    this.$el.find(".show-score-relationship").hide()
   }
 
   highlight(ids){

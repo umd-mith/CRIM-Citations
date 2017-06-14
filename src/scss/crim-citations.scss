@@ -219,6 +219,9 @@ svg {
   .mdl-tabs__panel {
     padding-top: 20px;
   }
+  label {
+    height: 100% !important;
+  }
 }
 
 .mdl-button--file {

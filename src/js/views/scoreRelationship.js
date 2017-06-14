@@ -230,7 +230,7 @@ class ScoreRelationship extends Backbone.View {
       this.scores[0].trigger("highlight", this.model.get("scoreA_meiids"))
     }
     if (!this.scores[1].get("hasSelection")){
-      this.scores[1].trigger("redoVerovioLayout")
+      this.scores[0].trigger("redoVerovioLayout")
       this.scores[1].trigger("highlight", this.model.get("scoreB_meiids"));
     }
 
