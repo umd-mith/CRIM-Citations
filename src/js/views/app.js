@@ -106,7 +106,7 @@ class AppView extends Backbone.View {
   }
 
   export(){
-    let time = (new Date()).toISOString()
+    let time = (new Date()).toISOString().split(".")[0]
     let export_obj = {
       relationships : this.relationships.toJSON(),
       scores: this.scores.export(),
@@ -119,9 +119,15 @@ class AppView extends Backbone.View {
     let string = JSON.stringify(export_obj)
 
     let bb = new Blob([string], {"type":"application\/json"});
-    let filename = this.user ? this.user : "anonymous"
+    let filename = this.user ? "user"+this.user : "anonymous"
     filename = filename + "_" + time + ".json"
     saveAs(bb, filename);
+
+    // Finally, clear relationships and assertions, but keep scores open
+    this.relationships.reset()
+    this.scores.each((s)=>{
+      s.assertions.reset()
+    })
 
     return export_obj
   }
