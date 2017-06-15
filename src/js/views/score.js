@@ -65,6 +65,10 @@ class ScoreView extends Backbone.View {
 
     this.$el.html(this.template({title: this.model.get("title")}));
 
+    Events.trigger("scoreRendered")
+
+    $("#loader").hide()
+
     return this.$el
 
   }

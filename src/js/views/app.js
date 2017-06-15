@@ -3,12 +3,12 @@ import * as Backbone from 'backbone';
 import Events from '../utils/backbone-events';
 import AddFile from './addFile';
 import Import from './import';
+import Export from './export';
 import Scores from '../data/coll-scores';
 import ScoreView from './score';
 import Relationships from '../data/coll-relationships';
 import RelationshipView from './scoreRelationship';
 import HideModeComponent from './hideModeComponent';
-import saveAs from 'save-as';
 import getParameterByName from '../utils/paras'
 
 class AppView extends Backbone.View {
@@ -16,6 +16,7 @@ class AppView extends Backbone.View {
   initialize () {
     this.addFileDialog = new AddFile({container: $("#dialogs")})
     this.importDialog = new Import({container: $("#dialogs")})
+    this.exportDialog = new Export({container: $("#dialogs")})
     this.scores = new Scores
     this.relationships = new Relationships
     this.relationshipDialog = new RelationshipView({container: $("#dialogs"), collection: this.relationships})
@@ -34,8 +35,13 @@ class AppView extends Backbone.View {
     this.listenTo(Events, "stopHideMode", this.stopHideMode)
 
     this.listenTo(Events, "import", this.importData)
+    this.listenTo(Events, "resetData", this.resetData)
 
     this.user = getParameterByName("userId")
+    this.citation = getParameterByName("cit")
+    if (this.citation) {
+      this.importFromOmeka()
+    }
 
   }
 
@@ -106,30 +112,42 @@ class AppView extends Backbone.View {
   }
 
   export(){
-    let time = (new Date()).toISOString().split(".")[0]
-    let export_obj = {
-      relationships : this.relationships.toJSON(),
-      scores: this.scores.export(),
-      assertions: this.scores.exportAssertions(),
-      created_at: time,
-      user: this.user
+
+    if (this.relationships.models.length > 0) {
+      let time = (new Date()).toISOString().split(".")[0]
+      let export_obj = {
+        relationships : this.relationships.toJSON(),
+        scores: this.scores.export(),
+        assertions: this.scores.exportAssertions(),
+        created_at: time,
+        user: this.user
+      }
+      // console.log(export_obj)
+
+      this.exportDialog.show(export_obj)
+
+      return export_obj
     }
-    // console.log(export_obj)
+    else alert("Please create a relationship before exporting.")
+  }
 
-    let string = JSON.stringify(export_obj)
-
-    let bb = new Blob([string], {"type":"application\/json"});
-    let filename = this.user ? "user"+this.user : "anonymous"
-    filename = filename + "_" + time + ".json"
-    saveAs(bb, filename);
-
-    // Finally, clear relationships and assertions, but keep scores open
+  resetData() {
     this.relationships.reset()
     this.scores.each((s)=>{
       s.assertions.reset()
     })
+  }
 
-    return export_obj
+  importFromOmeka(){
+    // get the citation
+    console.log(this.citation)
+    $.get("http://92.154.49.37/CRIM/api/citation/"+this.citation, (data)=>{
+      let json = JSON.parse(data)
+      // check that the user in the citation is the same as this.user
+      if (json.user == this.user){
+        this.importData(json)
+      }
+    })
   }
 
   importMeiData(url){
@@ -149,6 +167,7 @@ class AppView extends Backbone.View {
   }
 
   importData(data) {
+    $("#loader").show()
     for (let score of data.scores) {
       let s = this.scores.add(score)
       s.set("id", score.cid)

@@ -38,6 +38,7 @@ class Import extends Backbone.View {
   }
 
   import(e){
+    $("#loader").show()
     let tab = this.$el.find("div.mdl-tabs__panel.is-active").attr("id")
     if (tab == "local-panel"){
       this.fromLocal()

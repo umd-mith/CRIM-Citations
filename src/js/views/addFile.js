@@ -36,6 +36,7 @@ class AddFile extends Backbone.View {
   }
 
   open(e) {
+    $("#loader").show()
     if (this.$el.find("#crim-panel.is-active").length > 0){
       for (let score of this.$el.find("#crim-panel .mdl-checkbox__input:checked")){
         let $score = $(score)
