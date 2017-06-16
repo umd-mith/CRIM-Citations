@@ -8,7 +8,7 @@ let export_tpl = `
   </div>
   <div class="mdl-dialog__actions">
     <button type="button" class="mdl-button mdl-button--accent" id="expToDisk">Save to disk</button>
-    <button type="button" class="mdl-button mdl-button--attention" id="expToOmeka">Save to Omeka databse</button>
+    <button type="button" class="mdl-button mdl-button--attention" id="expToOmeka">Save to Omeka database</button>
     <button type="button" class="mdl-button close">Cancel</button>
   </div>
 `

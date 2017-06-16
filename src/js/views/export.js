@@ -9,6 +9,7 @@ class Export extends Backbone.View {
 
   initialize (options) {
     this.container = options.container;
+    this.citation = options.citation;
   }
 
   get tagName(){
@@ -37,21 +38,50 @@ class Export extends Backbone.View {
     let filename = this.data.user ? "user"+this.data.user : "anonymous"
     filename = filename + "_" + this.data.created_at + ".json"
     saveAs(bb, filename);
+    Events.trigger("resetData");
     this.close()
   }
 
   expToOmeka() {
     let string = JSON.stringify(this.data)
 
-    $.post( "http://92.154.49.37/CRIM/api/meifiles", string)
+    if (this.citation){
+      let r = confirm("This will overwrite an existing record in the Omeka database. Continue?")
+      if (r) {
+        // http://92.154.49.37/CRIM/api/meifiles/'+this.citation
+        $.ajax({
+          url: 'http://92.154.49.37/CRIM/api/meifiles/'+this.citation,
+          type: 'PUT',
+          data: string,
+          dataType: 'text',
+          contentType: 'text/plain',
+          headers: {
+            'Content-Type': 'text/plain'
+          },
+          success: () => {
+            Events.trigger("resetData");
+            this.$el.find(".mdl-dialog__content p").html("<strong>Success!</strong>");
+            setTimeout(()=>{this.close()}, '1100')
+          },
+          error: (err) => {
+            this.$el.find(".mdl-dialog__content p").html("<strong>An error occured!</strong>")
+            console.log(err)
+          }
+      });
+      }
+    }
+    else {
+      $.post( "http://92.154.49.37/CRIM/api/meifiles", string)
       .done(() => {
+        Events.trigger("resetData");
         this.$el.find(".mdl-dialog__content p").html("<strong>Success!</strong>");
         setTimeout(()=>{this.close()}, '1100')
-       })
-       .fail((err) => {
-         this.$el.find(".mdl-dialog__content p").html("<strong>An error occured!</strong>")
-         console.log(err)
-       })
+      })
+      .fail((err) => {
+        this.$el.find(".mdl-dialog__content p").html("<strong>An error occured!</strong>")
+        console.log(err)
+      })
+    }
   }
 
   show(data) {

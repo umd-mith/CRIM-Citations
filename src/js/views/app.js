@@ -16,7 +16,6 @@ class AppView extends Backbone.View {
   initialize () {
     this.addFileDialog = new AddFile({container: $("#dialogs")})
     this.importDialog = new Import({container: $("#dialogs")})
-    this.exportDialog = new Export({container: $("#dialogs")})
     this.scores = new Scores
     this.relationships = new Relationships
     this.relationshipDialog = new RelationshipView({container: $("#dialogs"), collection: this.relationships})
@@ -37,11 +36,13 @@ class AppView extends Backbone.View {
     this.listenTo(Events, "import", this.importData)
     this.listenTo(Events, "resetData", this.resetData)
 
-    this.user = getParameterByName("userId")
+    this.user = getParameterByName("userId") ? getParameterByName("userId") : getParameterByName("userid")
     this.citation = getParameterByName("cit")
     if (this.citation) {
       this.importFromOmeka()
     }
+
+    this.exportDialog = new Export({container: $("#dialogs"), citation : this.citation})
 
   }
 
@@ -136,16 +137,26 @@ class AppView extends Backbone.View {
     this.scores.each((s)=>{
       s.assertions.reset()
     })
+    if (history.pushState) {
+      var newurl = window.location.protocol + "//" + window.location.host + window.location.pathname;
+      if (this.user) {
+        newurl = newurl + "?userId="+this.user
+      }
+      window.history.pushState({path:newurl},'',newurl);
+    }
   }
 
   importFromOmeka(){
     // get the citation
-    console.log(this.citation)
+    $("#loader").show()
     $.get("http://92.154.49.37/CRIM/api/citation/"+this.citation, (data)=>{
       let json = JSON.parse(data)
       // check that the user in the citation is the same as this.user
       if (json.user == this.user){
         this.importData(json)
+      }
+      else {
+        $("#loader").hide()
       }
     })
   }
