@@ -126,20 +126,21 @@ class AddFile extends Backbone.View {
     // get files info
     return $.get("http://92.154.49.37/CRIM/api/meifiles", (data)=>{
       for (let score of data){
-        let title = score.item_title
-        let origf = score.files[0].original_filename
-        origf = origf.match("Mass") ? origf.split(/[_\.]/)[3] : ""
-        if (origf) {
-          title = title + " (" + origf + ")"
+        for (let file of score.files){
+          let title = score.item_title
+          let origf = file.original_filename
+          origf = origf.match("Mass") ? origf.split(/[_\.]/)[3] : ""
+          if (origf) {
+            title = title + " (" + origf + ")"
+          }
+          let fileinfo = {
+            title: title,
+            composer: score.composer,
+            url: this.filebase + file.filename,
+            id: "s"+file.id
+          }
+          this.scores.push(fileinfo)
         }
-
-        let fileinfo = {
-          title: title,
-          composer: score.composer,
-          url: this.filebase + score.files[0].filename,
-          id: "s"+score.files[0].id
-        }
-        this.scores.push(fileinfo)
       }
 
       this.container.append(this.$el.html(this.template({scores:this.scores})))
