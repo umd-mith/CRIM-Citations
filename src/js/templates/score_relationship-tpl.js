@@ -9,7 +9,7 @@ let score_relationship_tpl = `
     <ul class="mdl-list">
       <li class="mdl-list__item" data-score="A">
         <span class="mdl-list__item-primary-content">
-          <span class="truncate truncate_short">{{titleA}}</span>&nbsp;<span class="truncate truncate_short">{{scoreA_ema}}</span>
+          <span class="truncate truncate_short" title="{{titleA}}">{{titleA}}</span>&nbsp;<span class="truncate truncate_short" title="{{scoreA_ema}}">{{scoreA_ema}}</span>
           <span class="truncate truncate_short assert_typesA"></span>
         </span>
         <span class="mdl-list__item-secondary-action">
@@ -23,7 +23,7 @@ let score_relationship_tpl = `
       </li>
       <li class="mdl-list__item" data-score="B">
         <span class="mdl-list__item-primary-content">
-          <span class="truncate truncate_short">{{titleB}}</span>&nbsp;<span class="truncate truncate_short">{{scoreB_ema}}</span>
+          <span class="truncate truncate_short" title="{{titleB}}">{{titleB}}</span>&nbsp;<span class="truncate truncate_short" title="{{scoreB_ema}}">{{scoreB_ema}}</span>
           <span class="truncate truncate_short assert_typesB"></span>
         </span>
         <span class="mdl-list__item-secondary-action">
@@ -40,12 +40,12 @@ let score_relationship_tpl = `
     <div class="direction">
       <label class="mdl-radio mdl-js-radio mdl-js-ripple-effect for="rel-dir-a2b">
         <input type="radio" name="rel-dir" id="rel-dir-a2b" class="mdl-radio__button" checked>
-        <span class="mdl-radio__label"><span class="truncate">{{titleA}}</span> <i class="material-icons">arrow_forward</i> <span class="truncate">{{titleB}}</span></span>
+        <span class="mdl-radio__label"><span class="truncate" title="{{titleA}}">{{titleA}}</span> <i class="material-icons">arrow_forward</i> <span class="truncate">{{titleB}}</span></span>
       </label>
       <br/>
       <label class="mdl-radio mdl-js-radio mdl-js-ripple-effect" for="rel-dir-b2a">
         <input type="radio" name="rel-dir" id="rel-dir-b2a" class="mdl-radio__button">
-        <span class="mdl-radio__label"><span class="truncate">{{titleB}}</span> <i class="material-icons">arrow_forward</i> <span class="truncate">{{titleA}}</span></span>
+        <span class="mdl-radio__label"><span class="truncate" title="{{titleB}}">{{titleB}}</span> <i class="material-icons">arrow_forward</i> <span class="truncate">{{titleA}}</span></span>
       </label>
     </div>
     <h4>Relationship type</h4>

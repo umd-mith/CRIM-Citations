@@ -10,10 +10,10 @@ let score_assertion_tpl = `
         <li class="mdl-list__item rel_item" id="i_{{this.cid}}" data-relid="{{this.cid}}">
           <span class="mdl-list__item-primary-content">
             <i class="material-icons delete_item clickable" title="edit relationship">delete_forever</i>
-            <span class="truncate truncate_short">{{this.titleA}}</span>
+            <span class="truncate truncate_short" title="{{this.titleA}}">{{this.titleA}}</span>
             <i class="material-icons">{{#if this.boolDir}}arrow_forward{{else}}arrow_back{{/if}}</i>
-            <span class="truncate truncate_short">{{this.titleB}}</span>
-            <span class="truncate truncate_short">({{#each this.types}}{{label}}{{#unless @last}},{{/unless}}{{/each}})</span>
+            <span class="truncate truncate_short" title="{{this.titleB}}">{{this.titleB}}</span>
+            <span class="truncate truncate_short" title="{{#each this.types}}{{label}}{{#unless @last}},{{/unless}}{{/each}}">({{#each this.types}}{{label}}{{#unless @last}},{{/unless}}{{/each}})</span>
           </span>
           <span class="mdl-list__item-secondary-action">
             <i class="material-icons edit_relationship clickable" title="edit relationship">mode_edit</i>
@@ -32,7 +32,7 @@ let score_assertion_tpl = `
       <li class="mdl-list__item rel_item" id="i_{{this.cid}}" data-assertionid="{{this.cid}}">
         <span class="mdl-list__item-primary-content">
           <i class="material-icons delete_item clickable" title="edit relationship">delete_forever</i>
-          <span class="truncate">{{this.ema}}</span> <span class="truncate">({{#each this.types}}{{label}}{{#unless @last}},{{/unless}}{{/each}})</span>
+          <span class="truncate" title="{{this.ema}}">{{this.ema}}</span> <span class="truncate" title="{{#each this.types}}{{label}}{{#unless @last}},{{/unless}}{{/each}}">({{#each this.types}}{{label}}{{#unless @last}},{{/unless}}{{/each}})</span>
         </span>
         <span class="mdl-list__item-secondary-action">
           <i class="material-icons edit_assertion clickable" title="edit assertion">mode_edit</i>

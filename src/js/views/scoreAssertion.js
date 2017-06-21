@@ -50,9 +50,17 @@ class ScoreAssertion extends Backbone.View {
 
   save(){
     // Now "set" all the things on this.model.
-    this.model.set("ema", this.ema)
-    this.model.set("title", this.title)
-    this.model.set("mei_ids", this.mei_ids)
+    if (this.ema){
+      this.model.set("ema", this.ema)
+    }
+    if (this.title){
+      this.model.set("title", this.title)
+    }
+    if (this.mei_ids){
+      this.model.set("mei_ids", this.mei_ids)
+    }
+    // reset types
+    this.model.set("types", {})
     this.model.set("comment", this.$el.find("#assert-comment").val())
     this.$el.find(".types").each((i, type) => {
       let $type = $(type)
@@ -96,7 +104,7 @@ class ScoreAssertion extends Backbone.View {
       this.close()
       this.model.collection.trigger("savedAssert")
       // Events.trigger("ema:reset")
-      // console.log(this.model.get("types"))
+      console.log(this.model)
     }
   }
 

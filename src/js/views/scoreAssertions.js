@@ -92,7 +92,6 @@ class ScoreAssertions extends Backbone.View {
   }
 
   removeItem(item){
-    console.log(item)
     this.$el.find("#i_"+item.cid).remove()
   }
 

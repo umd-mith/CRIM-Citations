@@ -155,6 +155,7 @@ class ScoreRelationship extends Backbone.View {
           labels.push(types[type].label)
         }
         this.$el.find(".assert_typesA").html("("+labels.join(", ")+")")
+        this.$el.find(".assert_typesA").attr("title", "("+labels.join(", ")+")")
       }
     }
     if (assert_B_id  && this.scores[1].assertions.get(assert_B_id)) {
@@ -165,6 +166,7 @@ class ScoreRelationship extends Backbone.View {
           labels.push(types[type].label)
         }
         this.$el.find(".assert_typesB").html("("+labels.join(", ")+")")
+        this.$el.find(".assert_typesB").attr("title", "("+labels.join(", ")+")")
       }
     }
   }

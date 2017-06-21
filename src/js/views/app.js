@@ -62,7 +62,7 @@ class AppView extends Backbone.View {
     let scoreView = new ScoreView({model:
       this.scores.add({mei: fileInfo.string, title: title, url: fileInfo.url})
     })
-    this.$el.find("#create_edit .mdl-grid").prepend(scoreView.render())
+    this.$el.find("#create_edit .mdl-grid").append(scoreView.render())
     scoreView.renderContinuoScore()
   }
 
@@ -196,7 +196,7 @@ class AppView extends Backbone.View {
       this.importMeiData(s.get("url")).then((mei)=>{
         s.set("mei", mei)
         let scoreView = new ScoreView({model: s})
-        this.$el.find("#create_edit .mdl-grid").prepend(scoreView.render())
+        this.$el.find("#create_edit .mdl-grid").append(scoreView.render())
         scoreView.renderContinuoScore()
       })
 
