@@ -115,33 +115,37 @@ let score_relationship_tpl = `
       </button>
       <div class="rest" style="display:none">
         <div>
-          <label class="mdl-radio mdl-js-radio mdl-js-ripple-effect for="rt-tnm-em">
-            <input type="radio" name="rt-tnm-opts" id="rt-tnm-em" class="mdl-radio__button" {{#if types.rt-tnm.em}}checked{{/if}} {{#unless types.rt-tnm}}disabled{{/unless}}>
-            <span class="mdl-radio__label">Embellished</span>
+          <label class="mdl-checkbox mdl-js-checkbox mdl-js-ripple-effect for="rt-tnm-em">
+            <input type="checkbox" id="rt-tnm-em" class="mdl-checkbox__input" {{#if types.rt-tnm.em}}checked{{/if}} {{#unless types.rt-tnm}}disabled{{/unless}}>
+            <span class="mdl-checkbox__label">Embellished</span>
           </label>
-          <label class="mdl-radio mdl-js-radio mdl-js-ripple-effect for="rt-tnm-re">
-            <input type="radio" name="rt-tnm-opts" id="rt-tnm-re" class="mdl-radio__button" {{#if types.rt-tnm.re}}checked{{/if}} {{#unless types.rt-tnm}}disabled{{/unless}}>
-            <span class="mdl-radio__label">Reduced</span>
+          <label class="mdl-checkbox mdl-js-checkbox mdl-js-ripple-effect for="rt-tnm-re">
+            <input type="checkbox" id="rt-tnm-re" class="mdl-checkbox__input" {{#if types.rt-tnm.re}}checked{{/if}} {{#unless types.rt-tnm}}disabled{{/unless}}>
+            <span class="mdl-checkbox__label">Reduced</span>
           </label>
-          <label class="mdl-radio mdl-js-radio mdl-js-ripple-effect for="rt-tnm-am">
-            <input type="radio" name="rt-tnm-opts" id="rt-tnm-am" class="mdl-radio__button" {{#if types.rt-tnm.am}}checked{{/if}} {{#unless types.rt-tnm}}disabled{{/unless}}>
-            <span class="mdl-radio__label">Amplified</span>
+          <label class="mdl-checkbox mdl-js-checkbox mdl-js-ripple-effect for="rt-tnm-am">
+            <input type="checkbox" id="rt-tnm-am" class="mdl-checkbox__input" {{#if types.rt-tnm.am}}checked{{/if}} {{#unless types.rt-tnm}}disabled{{/unless}}>
+            <span class="mdl-checkbox__label">Amplified</span>
           </label>
-          <label class="mdl-radio mdl-js-radio mdl-js-ripple-effect for="rt-tnm-tr">
-            <input type="radio" name="rt-tnm-opts" id="rt-tnm-tr" class="mdl-radio__button" {{#if types.rt-tnm.tr}}checked{{/if}} {{#unless types.rt-tnm}}disabled{{/unless}}>
-            <span class="mdl-radio__label">Truncated</span>
+          <label class="mdl-checkbox mdl-js-checkbox mdl-js-ripple-effect for="rt-tnm-tr">
+            <input type="checkbox" id="rt-tnm-tr" class="mdl-checkbox__input" {{#if types.rt-tnm.tr}}checked{{/if}} {{#unless types.rt-tnm}}disabled{{/unless}}>
+            <span class="mdl-checkbox__label">Truncated</span>
           </label>
-          <label class="mdl-radio mdl-js-radio mdl-js-ripple-effect for="rt-tnm-ncs">
-            <input type="radio" name="rt-tnm-opts" id="rt-tnm-ncs" class="mdl-radio__button" {{#if types.rt-tnm.ncs}}checked{{/if}} {{#unless types.rt-tnm}}disabled{{/unless}}>
-            <span class="mdl-radio__label">New counter subject</span>
+          <label class="mdl-checkbox mdl-js-checkbox mdl-js-ripple-effect for="rt-tnm-ncs">
+            <input type="checkbox" id="rt-tnm-ncs" class="mdl-checkbox__input" {{#if types.rt-tnm.ncs}}checked{{/if}} {{#unless types.rt-tnm}}disabled{{/unless}}>
+            <span class="mdl-checkbox__label">New counter subject</span>
           </label>
-          <label class="mdl-radio mdl-js-radio mdl-js-ripple-effect for="rt-tnm-ocs">
-            <input type="radio" name="rt-tnm-opts" id="rt-tnm-ocs" class="mdl-radio__button" {{#if types.rt-tnm.ocs}}checked{{/if}} {{#unless types.rt-tnm}}disabled{{/unless}}>
-            <span class="mdl-radio__label">Old counter subject shifted</span>
+          <label class="mdl-checkbox mdl-js-checkbox mdl-js-ripple-effect for="rt-tnm-ocs">
+            <input type="checkbox" id="rt-tnm-ocs" class="mdl-checkbox__input" {{#if types.rt-tnm.ocs}}checked{{/if}} {{#unless types.rt-tnm}}disabled{{/unless}}>
+            <span class="mdl-checkbox__label">Old counter subject shifted</span>
           </label>
-          <label class="mdl-radio mdl-js-radio mdl-js-ripple-effect for="rt-tnm-nc">
-            <input type="radio" name="rt-tnm-opts" id="rt-tnm-nc" class="mdl-radio__button" {{#if types.rt-tnm.nc}}checked{{/if}} {{#unless types.rt-tnm}}disabled{{/unless}}>
-            <span class="mdl-radio__label">New combination</span>
+          <label class="mdl-checkbox mdl-js-checkbox mdl-js-ripple-effect for="rt-tnm-ocst">
+            <input type="checkbox" id="rt-tnm-ocst" class="mdl-checkbox__input" {{#if types.rt-tnm.ocst}}checked{{/if}} {{#unless types.rt-tnm}}disabled{{/unless}}>
+            <span class="mdl-checkbox__label">Old counter subject transposed</span>
+          </label>
+          <label class="mdl-checkbox mdl-js-checkbox mdl-js-ripple-effect for="rt-tnm-nc">
+            <input type="radio" id="rt-tnm-nc" class="mdl-checkbox__input" {{#if types.rt-tnm.nc}}checked{{/if}} {{#unless types.rt-tnm}}disabled{{/unless}}>
+            <span class="mdl-checkbox__label">New combination</span>
           </label>
         </div>
       </div>

@@ -48,14 +48,19 @@ let score_assertion_tpl = `
       </button>
       <div class="rest" style="display:none">
         <div class="selectGroup">
-          <label class="select_label" for="mt-sog-voice">Voice</label><br/>
+          <label class="select_label" for="mt-sog-voice1">Voice</label><br/>
           <span class="group">
-            <select class="dialog_select" name="mt-sog-voice" id="mt-sog-voice">
+            <select class="dialog_select" name="mt-sog-voice1" id="mt-sog-voice1">
               {{#each voices}}
               <option value="{{this}}">{{this}}</option>
               {{/each}}
             </select>
           </span>
+        </div>
+        <div data-for="mt-sog">
+          <button class="addVoice mdl-button mdl-js-button mdl-button--icon" {{#unless types.mt-fg}}disabled{{/unless}}>
+            <i class="material-icons">add</i>
+          </button>
         </div>
         <div>
           <label class="mdl-checkbox mdl-js-checkbox mdl-js-ripple-effect" for="mt-sog-dur">
@@ -538,6 +543,15 @@ let score_assertion_tpl = `
         <div class="mdl-textfield mdl-js-textfield">
           <textarea class="mdl-textfield__input" type="text" rows= "3" id="mt-fp-text" {{#unless types.mt-fp}}disabled{{/unless}}>{{#if types.mt-fp.text}}{{types.mt-fp.text}}{{/if}}</textarea>
           <label class="mdl-textfield__label" for="mt-fp-text">Comment...</label>
+        </div>
+        <label class="mdl-checkbox mdl-js-checkbox mdl-js-ripple-effect" for="mt-fp-ir">
+          <input type="checkbox" id="mt-fp-ir" class="mdl-checkbox__input" {{#if types.mt-fp.ir}}checked{{/if}} {{#unless types.mt-fp}}disabled{{/unless}}>
+          <span class="mdl-checkbox__label">Internal repetition</span>
+        </label>
+        <div class="mdl-textfield mdl-js-textfield mdl-textfield--floating-label">
+          <input class="mdl-textfield__input" type="text" pattern="\\d+-\\d+" id="mt-fp-r" {{#unless types.mt-fp}}disabled{{/unless}} {{#if types.mt-fp}}value="{{types.mt-fp.r}}"{{/if}}>
+          <label class="mdl-textfield__label" for="mt-fp-r">Internal repetition range</label>
+          <span class="mdl-textfield__error">Input is not a range of measure!</span>
         </div>
       </div>
     </div>
