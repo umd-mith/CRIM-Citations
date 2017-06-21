@@ -549,7 +549,7 @@ let score_assertion_tpl = `
           <span class="mdl-checkbox__label">Internal repetition</span>
         </label>
         <div class="mdl-textfield mdl-js-textfield mdl-textfield--floating-label">
-          <input class="mdl-textfield__input" type="text" pattern="\\d+-\\d+" id="mt-fp-r" {{#unless types.mt-fp}}disabled{{/unless}} {{#if types.mt-fp}}value="{{types.mt-fp.r}}"{{/if}}>
+          <input class="mdl-textfield__input" type="text" pattern="(\\d+-\\d+)(,\\d+-\\d+)*" id="mt-fp-r" {{#unless types.mt-fp}}disabled{{/unless}} {{#if types.mt-fp}}value="{{types.mt-fp.r}}"{{/if}}>
           <label class="mdl-textfield__label" for="mt-fp-r">Internal repetition range</label>
           <span class="mdl-textfield__error">Input is not a range of measure!</span>
         </div>
