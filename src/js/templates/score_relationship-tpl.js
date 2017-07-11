@@ -39,12 +39,12 @@ let score_relationship_tpl = `
     <h4>Direction</h4>
     <div class="direction">
       <label class="mdl-radio mdl-js-radio mdl-js-ripple-effect for="rel-dir-a2b">
-        <input type="radio" name="rel-dir" id="rel-dir-a2b" class="mdl-radio__button" checked>
+        <input type="radio" name="rel-dir" id="rel-dir-a2b" class="mdl-radio__button" {{#if boolDir}}checked{{/if}} {{#unless direction}}checked{{/unless}}>
         <span class="mdl-radio__label"><span class="truncate" title="{{titleA}}">{{titleA}}</span> <i class="material-icons">arrow_forward</i> <span class="truncate">{{titleB}}</span></span>
       </label>
       <br/>
       <label class="mdl-radio mdl-js-radio mdl-js-ripple-effect" for="rel-dir-b2a">
-        <input type="radio" name="rel-dir" id="rel-dir-b2a" class="mdl-radio__button">
+        <input type="radio" name="rel-dir" id="rel-dir-b2a" class="mdl-radio__button" {{#if direction}}{{#unless boolDir}}checked{{/unless}}{{/if}}>
         <span class="mdl-radio__label"><span class="truncate" title="{{titleB}}">{{titleB}}</span> <i class="material-icons">arrow_forward</i> <span class="truncate">{{titleA}}</span></span>
       </label>
     </div>
