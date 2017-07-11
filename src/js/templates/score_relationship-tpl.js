@@ -144,7 +144,7 @@ let score_relationship_tpl = `
             <span class="mdl-checkbox__label">Old counter subject transposed</span>
           </label>
           <label class="mdl-checkbox mdl-js-checkbox mdl-js-ripple-effect for="rt-tnm-nc">
-            <input type="radio" id="rt-tnm-nc" class="mdl-checkbox__input" {{#if types.rt-tnm.nc}}checked{{/if}} {{#unless types.rt-tnm}}disabled{{/unless}}>
+            <input type="checkbox" id="rt-tnm-nc" class="mdl-checkbox__input" {{#if types.rt-tnm.nc}}checked{{/if}} {{#unless types.rt-tnm}}disabled{{/unless}}>
             <span class="mdl-checkbox__label">New combination</span>
           </label>
         </div>
