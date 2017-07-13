@@ -123,6 +123,23 @@ class AppView extends Backbone.View {
         created_at: time,
         user: this.user
       }
+
+      // Remove unreferenced scores
+      let relScores = export_obj.relationships.reduce((acc, rel) => {
+        acc.add(rel.scoreA)
+        acc.add(rel.scoreB)
+        return acc
+      }, new Set())
+
+      let scoresToKeep = export_obj.scores.reduce((acc, score) => {
+        if (relScores.has(score.cid)) {
+          acc.push(score)
+        }
+        return acc
+      }, [])
+
+      export_obj.scores = scoresToKeep
+
       // console.log(export_obj)
 
       this.exportDialog.show(export_obj)
