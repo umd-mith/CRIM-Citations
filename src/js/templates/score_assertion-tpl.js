@@ -440,11 +440,13 @@ let score_assertion_tpl = `
           <label class="select_label" for="mt-cad-voice1">Voice</label><br/>
           <span class="group">
             <select class="dialog_select" name="mt-cad-voice1" id="mt-cad-voice1">
+              <option value="">None</option>
               {{#each voices}}
               <option value="{{this}}">{{this}}</option>
               {{/each}}
             </select>
             <select class="dialog_select" name="mt-cad-voice2" id="mt-cad-voice2">
+              <option value="">None</option>
               {{#each voices}}
               <option value="{{this}}">{{this}}</option>
               {{/each}}
@@ -471,6 +473,7 @@ let score_assertion_tpl = `
           <label class="select_label" for="mt-cad-dove_voice1">Dovetail voice</label><br/>
           <span class="group">
             <select class="dialog_select" name="mt-cad-dove_voice1" id="mt-cad-dove_voice1">
+              <option value="">None</option>
               {{#each voices}}
               <option value="{{this}}">{{this}}</option>
               {{/each}}
