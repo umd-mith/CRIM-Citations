@@ -207,10 +207,16 @@ class ScoreView extends Backbone.View {
 
   newAssertion(new_assert){
     this.scoreAssertionDialog.ema = this.$el.find(".cnt-emaexpr-expr").text()
+    if (!this.scoreAssertionDialog.ema) {
+      this.scoreAssertionDialog.ema = this.model.get("ema")
+    }
     this.scoreAssertionDialog.score = this.model
     this.scoreAssertionDialog.title = this.model.get("title")
     this.scoreAssertionDialog.voices = this.model.get("voices")
     this.scoreAssertionDialog.mei_ids = this.continuo.selectedElements
+    if (this.scoreAssertionDialog.mei_ids.length == 0) {
+      this.scoreAssertionDialog.mei_ids = this.model.get("mei_ids")
+    }
     this.showAssertion(new_assert)
     // this.continuo.clearSelection()
     // this.$el.find(".show-score-assertion").hide()

@@ -104,7 +104,6 @@ class ScoreAssertion extends Backbone.View {
       this.close()
       this.model.collection.trigger("savedAssert")
       // Events.trigger("ema:reset")
-      console.log(this.model)
     }
   }
 
@@ -185,7 +184,9 @@ class ScoreAssertion extends Backbone.View {
 
   highlightNotation() {
     if (!this.score.get("hasSelection")){
-      this.score.trigger("highlight", this.model.get("mei_ids"));
+      let mei_ids = this.model.get("mei_ids")
+      mei_ids = mei_ids ? mei_ids : this.mei_ids
+      this.score.trigger("highlight", mei_ids);
     }
   }
 

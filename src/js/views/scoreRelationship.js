@@ -135,6 +135,8 @@ class ScoreRelationship extends Backbone.View {
     let score_assert_id = this.model.get("score"+score_place+"assert")
     let score_assert = score.assertions.get(score_assert_id)
     if (!score_assert) {
+      score.set("ema", this.model.get("score"+score_place+"_ema"))
+      score.set("mei_ids", this.model.get("score"+score_place+"_meiids"))
       let new_assert = score.newAssertion()
       this.model.set("score"+score_place+"assert", new_assert.cid)
     }
