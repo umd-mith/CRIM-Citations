@@ -60,8 +60,13 @@ class Export extends Backbone.View {
           },
           success: () => {
             Events.trigger("resetData");
-            this.$el.find(".mdl-dialog__content p").html("<strong>Success!</strong>");
-            setTimeout(()=>{this.close()}, '1100')
+            this.$el.find(".mdl-dialog__content p").hide();
+            this.$el.find(".mdl-dialog__content strong").show()
+            setTimeout(()=>{
+              this.$el.find(".mdl-dialog__content p").show();
+              this.$el.find(".mdl-dialog__content strong").hide();
+              this.close()
+            }, '1100')
           },
           error: (err) => {
             this.$el.find(".mdl-dialog__content p").html("<strong>An error occured!</strong>")
@@ -74,8 +79,13 @@ class Export extends Backbone.View {
       $.post( "http://92.154.49.37/CRIM/api/meifiles", string)
       .done(() => {
         Events.trigger("resetData");
-        this.$el.find(".mdl-dialog__content p").html("<strong>Success!</strong>");
-        setTimeout(()=>{this.close()}, '1100')
+        this.$el.find(".mdl-dialog__content p").hide();
+        this.$el.find(".mdl-dialog__content strong").show()
+        setTimeout(()=>{
+          this.$el.find(".mdl-dialog__content p").show();
+          this.$el.find(".mdl-dialog__content strong").hide();
+          this.close()
+        }, '1100')
       })
       .fail((err) => {
         this.$el.find(".mdl-dialog__content p").html("<strong>An error occured!</strong>")

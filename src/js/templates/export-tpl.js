@@ -3,8 +3,9 @@ import * as Handlebars from 'handlebars';
 let export_tpl = `
   <h4 class="mdl-dialog__title">Export relationships</h4>
   <div class="mdl-dialog__content">
+    <strong style="display:none">Success!</strong>
     <p>Exporting will store your current work to the Omeka databse or to a file that you will be able to open and edit later.<br/>
-       Your scores will remain open, but the relationships created will not be available until re-loaded. Continue?
+       Your scores will remain open, but the relationships created will not be available until re-loaded. Continue?</p>
   </div>
   <div class="mdl-dialog__actions">
     <button type="button" class="mdl-button mdl-button--accent" id="expToDisk">Save to disk</button>

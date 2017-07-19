@@ -210,7 +210,7 @@ class ScoreView extends Backbone.View {
     if (!this.scoreAssertionDialog.ema) {
       this.scoreAssertionDialog.ema = this.model.get("ema")
     }
-    this.scoreAssertionDialog.score = this.model
+    // this.scoreAssertionDialog.score = this.model
     this.scoreAssertionDialog.title = this.model.get("title")
     this.scoreAssertionDialog.voices = this.model.get("voices")
     this.scoreAssertionDialog.mei_ids = this.continuo.selectedElements

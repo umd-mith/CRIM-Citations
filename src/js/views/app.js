@@ -200,6 +200,7 @@ class AppView extends Backbone.View {
       let s = this.scores.add(score)
       s.set("id", score.cid)
       s.cid = score.cid
+      s.assertions.score = score.cid
 
       for (let assert of data.assertions){
         if (assert.score == s.cid) {

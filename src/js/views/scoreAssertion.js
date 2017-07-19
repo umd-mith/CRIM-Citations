@@ -103,7 +103,6 @@ class ScoreAssertion extends Backbone.View {
     else {
       this.close()
       this.model.collection.trigger("savedAssert")
-      // Events.trigger("ema:reset")
     }
   }
 
