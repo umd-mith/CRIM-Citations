@@ -10,6 +10,8 @@ class ScoreAssertion extends Backbone.View {
   initialize(options){
     this.container = options.container
     this.score = options.score
+
+    this.listenTo(Events, "closedAssert", this.stopHideMode)
   }
 
   template(tpl){
@@ -44,8 +46,9 @@ class ScoreAssertion extends Backbone.View {
   }
 
   hide() {
+    this.$el.data("hiding", "true")
     this.el.close()
-    Events.trigger("startHideMode", this.el)
+    Events.trigger("startHideMode")
   }
 
   save(){
@@ -225,6 +228,10 @@ class ScoreAssertion extends Backbone.View {
     this.el.close();
     Events.trigger("closedAssert")
     this.$el.detach();
+  }
+
+  stopHideMode() {
+    this.$el.data("hiding", "false")
   }
 
   render(assert) {

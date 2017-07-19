@@ -44,6 +44,16 @@ class ScoreRelationship extends Backbone.View {
     if (Object.keys(this.model.get("types")).length == 0) {
         this.collection.remove(this.model.cid);
     }
+    // Assertions belonging to this relationship must be removed as well.
+    let assertA = this.model.get("scoreAassert")
+    let assertB = this.model.get("scoreBassert")
+    if (assertA) {
+      this.scores[0].assertions.remove(assertA)
+    }
+    if (assertB) {
+      this.scores[1].assertions.remove(assertB)
+    }
+
     this.scores[0].trigger("clearHighlight")
     this.scores[1].trigger("clearHighlight")
     this.scores[0].trigger("redoVerovioLayout")
@@ -112,11 +122,12 @@ class ScoreRelationship extends Backbone.View {
   }
 
   hide() {
-    Events.trigger("startHideMode", this.el)
+    Events.trigger("startHideMode")
   }
 
   startHideMode() {
     if (this.$el.attr("open")) {
+        this.$el.data("hiding", "true")
         this.el.close()
         this.scores[0].trigger("redoVerovioLayout")
     }
@@ -124,6 +135,7 @@ class ScoreRelationship extends Backbone.View {
 
   stopHideMode() {
     if (this.$el.parent() == length >0 && !this.$el.attr("open")) {
+      this.$el.data("hiding", "false")
       this.el.showModal()
     }
   }

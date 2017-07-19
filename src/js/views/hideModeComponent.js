@@ -19,13 +19,14 @@ class HideModeComponent extends Backbone.View {
   }
 
   close() {
-    this.dialog.showModal()
+    $("dialog").filter((i, d)=>{return $(d).data("hiding") === "true"}).each((i, d)=>{
+      d.showModal()
+    })
     Events.trigger("stopHideMode")
     this.$el.detach();
   }
 
-  render(dialog){
-    this.dialog = dialog
+  render(){
     this.$el.text("Return to editing")
     return this.el
   }

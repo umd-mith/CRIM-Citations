@@ -79,9 +79,9 @@ class AppView extends Backbone.View {
     this.relationshipDialog.show()
   }
 
-  startHideMode(dialog) {
+  startHideMode() {
     this.scores.trigger("disableButtons")
-    this.$el.find(".crim_header").prepend(this.hideModeComponent.render(dialog))
+    this.$el.find(".crim_header").prepend(this.hideModeComponent.render())
   }
 
   stopHideMode() {
