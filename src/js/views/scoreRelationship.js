@@ -43,15 +43,15 @@ class ScoreRelationship extends Backbone.View {
   cancel() {
     if (Object.keys(this.model.get("types")).length == 0) {
         this.collection.remove(this.model.cid);
-    }
-    // Assertions belonging to this relationship must be removed as well.
-    let assertA = this.model.get("scoreAassert")
-    let assertB = this.model.get("scoreBassert")
-    if (assertA) {
-      this.scores[0].assertions.remove(assertA)
-    }
-    if (assertB) {
-      this.scores[1].assertions.remove(assertB)
+        // Assertions belonging to this relationship must be removed as well.
+        let assertA = this.model.get("scoreAassert")
+        let assertB = this.model.get("scoreBassert")
+        if (assertA) {
+          this.scores[0].assertions.remove(assertA)
+        }
+        if (assertB) {
+          this.scores[1].assertions.remove(assertB)
+        }
     }
 
     this.scores[0].trigger("clearHighlight")
